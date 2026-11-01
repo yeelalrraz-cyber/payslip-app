@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>תלוש שכר למטפלת</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Rubik:wght@500;700&display=swap">
+<style>
+html{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}
+
+/* Layout: form column (start) + paper payslip in the familiar boxed layout (end), stacks on phone */
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --paper:#FFFFFF; --ink:#18213A; --muted:#5A6378;
+  --line:#CBD2DE; --head:#1C2A55; --head-ink:#FFFFFF; --accent:#13756C; --accent-ink:#FFFFFF; --accent-soft:#E1F0EE;
+  --warn:#965A00; --warn-soft:#FBF0DD; --neg:#A23B2A;
+  --f-display:"Rubik","Assistant",system-ui,sans-serif;
+  --f-body:"Assistant",system-ui,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F131C; --surface:#171D29; --paper:#1A2130; --ink:#E5E9F2; --muted:#9AA3B8;
+  --line:#2E3850; --head:#2B3D75; --head-ink:#F2F5FB; --accent:#3FB5A8; --accent-ink:#0B1A18; --accent-soft:#183331;
+  --warn:#E9B062; --warn-soft:#33291A; --neg:#F08C7A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F131C; --surface:#171D29; --paper:#1A2130; --ink:#E5E9F2; --muted:#9AA3B8;
+  --line:#2E3850; --head:#2B3D75; --head-ink:#F2F5FB; --accent:#3FB5A8; --accent-ink:#0B1A18; --accent-soft:#183331;
+  --warn:#E9B062; --warn-soft:#33291A; --neg:#F08C7A; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.7rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0}
+.grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:18px;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+legend{font-family:var(--f-display);font-weight:500;font-size:1.02rem;margin-bottom:8px;padding:0}
+.sep{border-top:1px solid var(--line)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+@media (max-width:460px){.fields{grid-template-columns:minmax(0,1fr)}}
+.full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:.88rem;color:var(--muted);min-width:0}
+label.f .hint{font-size:.78rem}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;width:100%;min-width:0}
+input[type=number]{font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+label.chk{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;grid-column:1/-1}
+label.chk input{width:auto;margin-top:4px}
+details>summary{cursor:pointer;font-family:var(--f-display);font-weight:500}
+details[open]>summary{margin-bottom:10px}
+.note{font-size:.82rem;color:var(--muted);margin:0}
+.banner{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:8px 12px;font-size:.88rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border-radius:6px;padding:7px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600}
+button.ghost{background:transparent;color:var(--accent)}
+.err{color:var(--neg);font-weight:600}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.adv-list{display:flex;flex-direction:column;gap:6px}
+.adv-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:end}
+.adv-row button{padding:6px 10px}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;color:var(--accent);padding:5px 12px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* ---------- payslip ---------- */
+.slip-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.slip{background:var(--paper);color:var(--ink);border:1px solid var(--line);padding:22px;display:flex;flex-direction:column;gap:16px;min-width:0;
+  box-shadow:0 10px 24px -18px rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
+.slip .row{display:grid;gap:16px;min-width:0}
+.r-top{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+.r-mid{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.r-pay{grid-template-columns:minmax(0,2.3fr) minmax(0,1fr)}
+.r-rights{grid-template-columns:minmax(0,2.3fr) minmax(0,1fr)}
+.r-extra{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+@media (max-width:640px){.r-top,.r-mid,.r-pay,.r-rights,.r-extra{grid-template-columns:minmax(0,1fr)}}
+.box{border:1.5px solid var(--head);min-width:0}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding:8px 10px;font-size:.92rem}
+.kv span:nth-child(odd){white-space:nowrap}
+.kv span:nth-child(even){text-align:end;overflow-wrap:anywhere}
+.box h3{margin:0;background:var(--head);color:var(--head-ink);font-weight:500;font-size:.92rem;text-align:center;padding:4px;font-family:var(--f-body)}
+.to{display:flex;flex-direction:column;gap:6px}
+.to b{font-family:var(--f-display)}
+.to .box{padding:6px 10px;font-size:1rem}
+.tbl-wrap{overflow-x:auto;min-width:0}
+.slip table{width:100%;border-collapse:collapse;font-size:.88rem;border:1.5px solid var(--head)}
+.slip th{background:var(--head);color:var(--head-ink);font-weight:500;padding:5px 6px;text-align:start;white-space:nowrap}
+.slip td{padding:4px 6px;border-inline-start:1px solid var(--line);white-space:nowrap}
+.slip td:first-child{border-inline-start:0}
+.slip td.n,.slip th.n{text-align:center;direction:ltr}
+.slip tr.gap td{height:14px}
+.slip tr.sum td{border-top:1px solid var(--line)}
+.slip tr.strong td{font-weight:700}
+.duebar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--accent);color:var(--accent-ink);padding:6px 12px;font-weight:700;border:1.5px solid var(--head)}
+.duebar .v{direction:ltr;font-size:1.05rem}
+.ded-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.sigline{min-width:220px;flex:1;max-width:340px;border-bottom:1px solid var(--ink);padding-bottom:2px;font-size:.9rem}
+.small{font-size:.78rem;color:var(--muted)}
+.extra{border-top:2px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:14px}
+.extra h4{margin:0;font-family:var(--f-display);font-weight:500;font-size:.95rem}
+.slip .fund-total td{font-weight:700;background:var(--accent-soft)}
+.slip tr.minus td.n{color:var(--neg)}
+#copyMsg{font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.wbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.wtab{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:600}
+.wtab[aria-pressed="true"]{background:var(--head);color:var(--head-ink);border-color:var(--head)}
+.wtab.add{border-style:dashed;color:var(--accent);background:transparent}
+.store-note{font-size:.82rem;color:var(--muted)}
+.savebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.savebar .grp{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{display:inline-block;font-size:.78rem;border-radius:999px;padding:2px 10px;font-weight:600;background:var(--accent-soft);color:var(--accent)}
+.pill.off{background:var(--warn-soft);color:var(--warn)}
+.hist{display:flex;flex-direction:column;gap:4px}
+.hrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:5px 8px;border:1px solid var(--line);border-radius:6px;font-variant-numeric:tabular-nums}
+.hrow.cur{border-color:var(--accent);background:var(--accent-soft)}
+.hrow .amt{direction:ltr}
+.hrow button{padding:3px 10px;font-size:.85rem}
+button.danger{border-color:var(--neg);color:var(--neg);background:transparent}
+button:disabled{opacity:.5;cursor:not-allowed}
+.src{font-size:.8rem;color:var(--accent)}
+.slip .nopay{display:block;font-size:.72rem;color:var(--muted);line-height:1.1}
+.pdf-host{position:fixed;top:0;left:-12000px;width:820px;background:#fff;
+  --paper:#FFFFFF;--ink:#18213A;--muted:#5A6378;--line:#CBD2DE;--head:#1C2A55;--head-ink:#FFFFFF;--accent:#13756C;--accent-ink:#FFFFFF;--accent-soft:#E1F0EE;--neg:#A23B2A}
+.pdf-host .slip{box-shadow:none;border:0;color:var(--ink);background:var(--paper)}
+.days{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+.days .lbl{font-size:.82rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.day{font-size:.85rem;padding:4px 10px;border-radius:999px;font-weight:600;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent)}
+.day[aria-pressed="false"]{background:transparent;color:var(--muted);border:1px dashed var(--muted);text-decoration:line-through}
+.day .x{margin-inline-start:6px;opacity:.7}
+.addhol{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;gap:6px;align-items:end}
+input[readonly]{opacity:.75}
+</style>
+</head>
+<body>
+
+
+<div class="wrap" dir="rtl" lang="he">
+  <header>
+    <h1>תלוש שכר למטפלת סיעודית</h1>
+    <p class="sub">עד 3 מטפלות קבועות, עם היסטוריה של כל התלושים. <span class="store-note" id="storeNote">טוען נתונים…</span></p>
+    <div class="actions" id="acctBar" hidden style="margin-top:6px">
+      <span class="note" id="acctEmail"></span>
+      <button type="button" class="ghost" id="membersToggle" hidden>ניהול משתמשים</button>
+      <button type="button" class="ghost" id="signOutBtn">יציאה</button>
+    </div>
+    <div class="days" id="membersBox" hidden style="margin-top:8px">
+      <span class="lbl">מי יכול להיכנס: כתובות Gmail שאישרת. כל מי שברשימה רואה ומעדכן את כל המטפלות והתלושים.</span>
+      <div class="hist" id="membersList"></div>
+      <div class="addhol" style="grid-template-columns:minmax(0,1fr) auto">
+        <label class="f">כתובת Gmail<input type="email" id="memberEmail" placeholder="name@gmail.com" dir="ltr"></label>
+        <button type="button" class="ghost" id="memberAdd">הוספה</button>
+      </div>
+    </div>
+    <div class="actions" id="backupBar" hidden style="margin-top:6px">
+      <button type="button" class="ghost" id="backupBtn">גיבוי לקובץ</button>
+      <label class="ghost" style="cursor:pointer;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:6px 14px;font-weight:600">שחזור מגיבוי<input type="file" id="restoreFile" accept=".json,application/json" hidden></label>
+      <span class="note">מומלץ לגבות פעם בחודש. ניקוי נתוני הדפדפן מוחק את המטפלות והתלושים.</span>
+    </div>
+  </header>
+
+  <div class="banner" id="gate" hidden style="flex-direction:column;align-items:flex-start;padding:16px">
+    <b id="gateTitle" style="font-family:var(--f-display);font-size:1.05rem"></b>
+    <span id="gateText"></span>
+    <div class="actions"><button type="button" id="gateBtn"></button></div>
+  </div>
+
+  <div class="wbar" id="wbar" role="group" aria-label="בחירת מטפלת"></div>
+
+  <div class="banner" id="sampleBanner">
+    <span>עוד לא נשמרה מטפלת. בטופס מוצגת דוגמה (עובדת שהתחילה ב־13/10/26). מלאי את הפרטים של המטפלת שלך ולחצי "שמירה כמטפלת".</span>
+    <button id="saveAsWorker" type="button">שמירה כמטפלת</button>
+  </div>
+
+  <div class="grid">
+    <!-- ================= FORM ================= -->
+    <form class="panel" id="frm" autocomplete="off">
+      <details id="profileBox">
+        <summary>פרטי המטפלת והמעסיק (קבועים)</summary>
+        <fieldset>
+          <div class="fields">
+            <label class="f">שם המעסיק<input id="employer" value="ישראל ישראלי"></label>
+            <label class="f">ת״ז המעסיק<input id="employerId" value="000000000"></label>
+            <label class="f full">כתובת המעסיק<input id="employerAddr" value="רחוב הדוגמה 1, ירושלים"></label>
+            <label class="f">שם העובדת<input id="worker" value="Maria Santos"></label>
+            <label class="f">מספר דרכון<input id="passport" value="AB000000"></label>
+            <label class="f">תאריך תחילת עבודה<input type="date" id="start" value="2026-10-13"></label>
+            <label class="f">תאריך סיום (אם הסתיימה)<input type="date" id="end" value=""></label>
+            <label class="f">יום המנוחה השבועי
+              <select id="restWd"><option value="6">שבת</option><option value="0">ראשון</option><option value="5">שישי</option></select>
+            </label>
+            <label class="f">לוח החגים של העובדת
+              <select id="holCal"><option value="jewish">חגי ישראל</option><option value="christian">חגים נוצריים</option><option value="custom">תאריכים שאני קובעת</option><option value="none">בלי לוח (מוסיפים ידנית בכל חודש)</option></select>
+            </label>
+            <div class="full days" id="customHolBox" hidden>
+              <span class="lbl">ימי החג של העובדת. מסמנים "כל שנה" לחג שחל באותו תאריך בכל שנה, כמו חג המולד.</span>
+              <div class="hist" id="customHolList"></div>
+              <div class="addhol" style="grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto auto">
+                <label class="f">תאריך<input type="date" id="chD"></label>
+                <label class="f">שם החג<input id="chN" placeholder="למשל: חג המולד"></label>
+                <label class="chk" style="grid-column:auto;align-self:center"><input type="checkbox" id="chY" checked> כל שנה</label>
+                <button type="button" class="ghost" id="chAdd">הוספה</button>
+              </div>
+              <span class="note" id="chCount"></span>
+            </div>
+            <label class="f">תשלום דמי הבראה
+              <select id="recPlan"><option value="monthly">כל חודש בתלוש</option><option value="annual">פעם בשנה (חוסכים בקופה)</option></select>
+            </label>
+            <label class="chk"><input type="checkbox" id="veteran"> עובדת ותיקה בישראל (עבדה כבר אצל מעסיק קודם). פנסיה מהחודש הראשון במקום מהחודש השביעי.</label>
+          </div>
+          <legend style="margin-top:6px">ניכויים חודשיים קבועים</legend>
+          <div class="fields">
+            <label class="f">הוצאות מגורים<input type="number" id="dHousing" min="0" step="0.01" value="0"></label>
+            <label class="f">הוצאות כלכלה<input type="number" id="dFood" min="0" step="0.01" value="243.85"></label>
+            <label class="f">ביטוח בריאות<input type="number" id="dHealth" min="0" step="0.01" value="0"></label>
+            <label class="f">נלוות למגורים<input type="number" id="dExtra" min="0" step="0.01" value="0"></label>
+          </div>
+          <p class="note">סכום לחודש מלא. בחודש חלקי הוא מחושב לפי אחוז המשרה.</p>
+          <legend style="margin-top:6px">יתרות פתיחה</legend>
+          <p class="note">רק אם המטפלת עבדה אצלך לפני שהתחלת להשתמש באפליקציה. משמשות לתלוש הראשון שנשמר.</p>
+          <div class="fields">
+            <label class="f">הבראה שנצברה (₪)<input type="number" id="oRec" step="0.01" value="0"></label>
+            <label class="f">פיצויים שנצברו (₪)<input type="number" id="oSev" step="0.01" value="0"></label>
+            <label class="f">פנסיה שנצברה (₪)<input type="number" id="oPen" step="0.01" value="0"></label>
+            <label class="f">יתרת ימי חופשה<input type="number" id="oVac" step="0.01" value="0"></label>
+            <label class="f">יתרת ימי מחלה<input type="number" id="oSick" step="0.5" value="0"></label>
+            <label class="f">יתרת ימי חג<input type="number" id="oHol" step="1" value="0"></label>
+            <label class="f">יתרת הקופה (₪)<input type="number" id="oFund" step="0.01" value="0"></label>
+          </div>
+          <div class="actions" id="delWrap" hidden>
+            <button type="button" class="danger" id="delWorker">מחיקת המטפלת וכל התלושים שלה</button>
+          </div>
+        </fieldset>
+      </details>
+
+      <div class="sep"></div>
+      <fieldset>
+        <legend>חודש התלוש</legend>
+        <div class="fields">
+          <label class="f">חודש<input type="month" id="month" value="2026-10"></label>
+        </div>
+        <div id="histBox" hidden>
+          <p class="note" style="margin-bottom:6px">תלושים שמורים:</p>
+          <div class="hist" id="hist"></div>
+        </div>
+      </fieldset>
+
+      <div class="sep"></div>
+      <fieldset>
+        <legend>מה קרה החודש</legend>
+        <label class="chk"><input type="checkbox" id="autoDays" checked> חישוב אוטומטי של ימי המנוחה והחגים לפי לוח השנה</label>
+        <div class="days" id="dayList"></div>
+        <div class="fields">
+          <label class="f">ימי מנוחה שבועית שעבדה<input type="number" id="restDays" min="0" step="1" value="3"></label>
+          <label class="f">ימי חג שעבדה<input type="number" id="holDays" min="0" step="1" value="0"></label>
+          <label class="f">ימי חג שלקחה (חופש)<input type="number" id="holTaken" min="0" step="1" value="0"><span class="hint">יורדים מיתרת 9 ימי החג</span></label>
+          <label class="f">ימי חופשה שנתית שניצלה<input type="number" id="vacTaken" min="0" step="0.5" value="0"><span class="hint">משולמים בתוך המשכורת</span></label>
+          <label class="f">ימי מחלה ברצף<input type="number" id="sickDays" min="0" step="1" value="0"><span class="hint">יום 1 ללא תשלום, ימים 2–3 ב־50%</span></label>
+          <label class="f">ימי היעדרות ללא תשלום<input type="number" id="unpaidDays" min="0" step="1" value="0"></label>
+          <label class="f">דמי הבראה בתלוש הזה
+            <select id="recMode">
+              <option value="none">לא משולמים החודש (נחסכים בקופה)</option>
+              <option value="annual">תשלום שנתי מלא מהקופה</option>
+              <option value="monthly" selected>תשלום חודשי בתלוש</option>
+            </select>
+          </label>
+          <label class="f">קיזוז אגרת ויזה<input type="number" id="dVisa" min="0" step="0.01" value="0"><span class="hint">205 ₪ אם המעסיק שילם</span></label>
+          <label class="f">תוספת אחרת (₪)<input type="number" id="otherAdd" min="0" step="0.01" value="0"></label>
+          <label class="f">תיאור התוספת<input id="otherAddLbl" value=""></label>
+        </div>
+      </fieldset>
+
+      <div class="sep"></div>
+      <fieldset>
+        <legend>מקדמות ששולמו החודש</legend>
+        <div id="advList" class="adv-list"></div>
+        <div class="actions">
+          <button type="button" class="ghost" id="addAdv">הוספת מקדמה</button>
+          <span class="note">סה״כ מקדמות: <b id="advSum"></b> ₪. הסכום יקוזז מהיתרה לתשלום.</span>
+        </div>
+      </fieldset>
+
+      <div class="sep"></div>
+      <fieldset>
+        <legend>יתרות מהחודש הקודם</legend>
+        <p class="src" id="prevSrc"></p>
+        <div class="fields">
+          <label class="f">הבראה שנצברה (₪)<input type="number" id="pRec" step="0.01" value="0"></label>
+          <label class="f">פיצויים שנצברו (₪)<input type="number" id="pSev" step="0.01" value="0"></label>
+          <label class="f">פנסיה שנצברה (₪)<input type="number" id="pPen" step="0.01" value="0"></label>
+          <label class="f">יתרת ימי חופשה<input type="number" id="pVac" step="0.01" value="0"></label>
+          <label class="f">יתרת ימי מחלה<input type="number" id="pSick" step="0.5" value="0"></label>
+          <label class="f">יתרת ימי חג<input type="number" id="pHol" step="1" value="0"><span class="hint">בתחילת כל שנת עבודה מתאפס ל־9</span></label>
+          <label class="f">יתרת הקופה (₪)<input type="number" id="fundPrev" step="0.01" value="0"></label>
+        </div>
+      </fieldset>
+
+      <div class="sep"></div>
+      <fieldset>
+        <legend>משיכה מהקופה</legend>
+        <div class="fields">
+          <label class="f">נמשך מהקופה החודש<input type="number" id="fundUsed" min="0" step="0.01" value="0"></label>
+          <label class="f">לאיזו מטרה<input id="fundUsedLbl" value="" placeholder="פנסיה, הבראה, חופשה"></label>
+        </div>
+      </fieldset>
+
+      <div class="sep"></div>
+      <details>
+        <summary>תעריפים (משותפים לכל המטפלות)</summary>
+        <div class="fields">
+          <label class="f">משכורת חודשית ברוטו<input type="number" id="rBase" step="0.01" value="6443.85"></label>
+          <label class="f">שכר מינימום (לחישוב פנסיה)<input type="number" id="rMin" step="0.01" value="6443.85"></label>
+          <label class="f">שעות בחודש<input type="number" id="rHours" step="1" value="182"></label>
+          <label class="f">ימי עבודה בחודש<input type="number" id="rDays" step="1" value="26"><span class="hint">ערך יום = ברוטו ÷ ימים</span></label>
+          <label class="f">יום מנוחה / חג<input type="number" id="rHol" step="0.01" value="439.74"></label>
+          <label class="f">יום הבראה<input type="number" id="rRec" step="0.01" value="451.50"></label>
+          <label class="f">סכום מקדמה רגיל<input type="number" id="rAdv" step="0.01" value="100"></label>
+          <label class="f">ביטוח לאומי מעסיק (%)<input type="number" id="rBL" step="0.01" value="3.6"></label>
+          <label class="f">פנסיה מעסיק (%)<input type="number" id="rPen" step="0.01" value="6.5"></label>
+          <label class="f">פיצויים (%)<input type="number" id="rSev" step="0.01" value="8.33"><span class="hint">מחושב כ־1/12 משכר הבסיס</span></label>
+          <label class="f">דמי תאגיד לחודש<input type="number" id="rCorp" step="0.01" value="70"></label>
+        </div>
+      </details>
+    </form>
+
+    <!-- ================= PAYSLIP ================= -->
+    <div class="slip-col">
+      <div class="savebar">
+        <div class="grp">
+          <button type="button" id="saveSlip" disabled>שמירת התלוש</button>
+          <span class="pill off" id="saveState" hidden></span>
+        </div>
+        <div class="grp">
+          <div class="seg" role="group" aria-label="שפת התלוש">
+            <button type="button" id="langHe" aria-pressed="true">עברית</button>
+            <button type="button" id="langEn" aria-pressed="false">English</button>
+          </div>
+          <button type="button" class="ghost" id="copyBtn">העתקה כטקסט</button>
+        </div>
+        <div class="grp">
+          <select id="pdfMode" aria-label="שפת הקובץ" style="width:auto">
+            <option value="both">עברית + English</option>
+            <option value="he">עברית</option>
+            <option value="en">English</option>
+          </select>
+          <button type="button" id="pdfBtn">הורדת PDF</button>
+        </div>
+      </div>
+      <span id="copyMsg" class="note" role="status"></span>
+      <textarea id="copyFallback" hidden readonly style="width:100%;min-height:160px;font:inherit"></textarea>
+      <div id="sErr" class="err" hidden></div>
+      <section class="slip" id="slip" aria-live="polite"></section>
+    </div>
+  </div>
+  <p class="note">החישוב כללי ואינו מחליף ייעוץ. התלוש לא כולל מס הכנסה וביטוח לאומי עובד. חובה לתעד כל תשלום, להחתים את העובד/ת ולהעביר את השכר לחשבון בנק על שמו/ה.</p>
+</div>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const PROFILE=['employer','employerId','employerAddr','worker','passport','start','end','restWd','holCal','recPlan','veteran','dHousing','dFood','dHealth','dExtra','oRec','oSev','oPen','oVac','oSick','oHol','oFund'];
+const MONTHLY=['autoDays','restDays','holDays','holTaken','vacTaken','sickDays','unpaidDays','recMode','dVisa','otherAdd','otherAddLbl','pRec','pSev','pPen','pVac','pSick','pHol','fundPrev','fundUsed','fundUsedLbl'];
+const RATES=['rBase','rMin','rHours','rDays','rHol','rRec','rAdv','rBL','rPen','rSev','rCorp'];
+const MONTH_BLANK={autoDays:true,restDays:'0',holDays:'0',holTaken:'0',vacTaken:'0',sickDays:'0',unpaidDays:'0',recMode:'none',dVisa:'0',otherAdd:'0',otherAddLbl:'',fundUsed:'0',fundUsedLbl:''};
+const OPEN_MAP={pRec:'oRec',pSev:'oSev',pPen:'oPen',pVac:'oVac',pSick:'oSick',pHol:'oHol',fundPrev:'oFund'};
+const RES_MAP={pRec:'recNew',pSev:'sevNew',pPen:'penNew',pVac:'vacNew',pSick:'sickNew',pHol:'holNew',fundPrev:'fundNew'};
+const MAX_WORKERS=3;
+// Website build: Firebase project settings and the owner's Gmail (filled in when deploying)
+const FIREBASE_CONFIG=null;
+const OWNER_EMAIL='';
+
+let advances=[{d:'2026-10-18',a:'100'},{d:'2026-10-25',a:'100'},{d:'2026-10-31',a:'100'}];
+let restOff=[], holOff=[], holAdd=[], holCustom=[];
+let lang='he', lastText='', lastResult=null;
+let store=null, workers=[], curW=null, slips={}, slipsReady=false, unsubSlips=null;
+
+const VAC=[0,14,14,14,14,14,16,18,19,20,21,22,23,24];
+const vacDays=y=>y>=13?24:VAC[Math.max(1,y)];
+function recDays(n){ if(n<1)return 0; if(n===1)return 5; if(n<=3)return 6; if(n<=10)return 7; if(n<=15)return 8; if(n<=19)return 9; return 10; }
+const f2=v=>(Math.round(v*100)/100).toFixed(2);
+const r2=v=>Math.round(v*100)/100;
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0;};
+const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const dShort=s=>{if(!s)return '';const [y,m,d]=s.split('-');return `${+d}/${+m}/${y.slice(2)}`;};
+const mLabel=m=>{const [y,mm]=m.split('-');return `${mm}/${y}`;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const lsGet=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
+const L={
+ he:{dir:'rtl',title:'תלוש שכר לחודש',printed:'הודפס בתאריך',empName:'שם המעסיק',empId:'מספר ת.ז המעסיק',empAddr:'כתובת המעסיק',
+  to:'לכבוד:',personal:'פרטים אישיים',passport:'מספר דרכון:',jobType:'סוג משרה:',jobTypeV:'משרה מלאה',baseType:'בסיס השכר:',baseTypeV:'חודשי',
+  start:'תחילת עבודה:',field:'תחום העסקה:',fieldV:'סיעוד',
+  desc:'תיאור התשלום',qty:'כמות',rate:'תעריף',bsal:'שכר בסיס',pct:'אחוז משרה',pay:'התשלום',
+  base:'שכר בסיס',restWork:'עבודה בימי מנוחה',holWork:'עבודה בימי חג',recPay:'דמי הבראה',other:'תוספת',
+  totPay:'סה"כ תשלומים',totSal:'סה"כ שכר:',totDed:'סה"כ ניכויים',payable:'שכר לתשלום',
+  dedH:'ניכויים',dedV:'הניכוי',housing:'הוצאות מגורים',food:'הוצאות כלכלה',health:'ביטוח בריאות',extra:'נלוות למגורים',sick:'ימי מחלה',unpaid:'היעדרות',visa:'אגרת ויזה',adv:'מקדמות / דמי כיס',
+  due:'יתרה לתשלום',subject:'נושא',cur:'נתונים שוטפים',curRate:'תעריף שוטף',used:'ימים שנוצלו',acc:'נתונים מצטברים',
+  rec:'הבראה',sev:'פיצויים',pen:'פיקדון גמל',vac:'יתרת ימי חופשה',hol:'יתרת ימי חג',sickBal:'יתרת ימי מחלה',
+  gen:'נתונים כלליים',method:'אופן תשלום',methodV:'חודשי',bl:'ביטוח לאומי',law:'*זכאות על פי חוק',nopay:'לא לתשלום',penFrom:'מ־',sign:'חתימה',
+  fundH:'לשים בצד בקופה החודש',fRec:'דמי הבראה',fVac:'ימי חופשה',fPen:'פנסיה',fTot:'סה"כ לשים בצד',fPrev:'יתרה מהחודש הקודם',fUsed:'נמשך מהקופה',fNew:'יתרת הקופה',
+  empH:'עלות למעסיק',gross:'ברוטו',blE:'ביטוח לאומי מעסיק',fundE:'הפרשה לקופה',sevE:'פיצויים',corp:'דמי תאגיד',empTot:'עלות חודשית',internal:'לשימוש המעסיק, לא חלק מהתלוש'},
+ en:{dir:'ltr',title:'Payslip for',printed:'Printed on',empName:'Employer name',empId:'Employer ID number',empAddr:'Employer address',
+  to:'To',personal:'Personal details',passport:'Passport number',jobType:'Job type:',jobTypeV:'Full-time',baseType:'Base salary:',baseTypeV:'Monthly',
+  start:'Start of employment:',field:'Field of employment:',fieldV:'Caregiving',
+  desc:'Description',qty:'Quantity',rate:'Rate',bsal:'B. Salary',pct:'Work',pay:'Payment',
+  base:'Base salary',restWork:'Rest day work',holWork:'Holiday work',recPay:'Convalescence pay',other:'Addition',
+  totPay:'Total payments',totSal:'Total salary',totDed:'All deductions',payable:'Salary payable',
+  dedH:'Deductions',dedV:'Deduction',housing:'Accommodation',food:'Food expenses',health:'Health insurance',extra:'Housing-related',sick:'Sick days',unpaid:'Unpaid absence',visa:'Visa fee',adv:'Advances',
+  due:'Balance due',subject:'Subject',cur:'Current totals',curRate:'Current rate',used:'Days used',acc:'Totals',
+  rec:'Convalescence',sev:'Severance pay',pen:'Pension deposit',vac:'Vacation balance',hol:'Holiday balance',sickBal:'Sick days balance',
+  gen:'General data',method:'Payment method',methodV:'Monthly',bl:'National insurance',law:'*Eligibility under the law',nopay:'Not payable',penFrom:'From ',sign:'Signature',
+  fundH:'Set aside this month',fRec:'Convalescence',fVac:'Vacation days',fPen:'Pension',fTot:'Total to set aside',fPrev:'Previous balance',fUsed:'Withdrawn',fNew:'Fund balance',
+  empH:'Employer cost',gross:'Gross',blE:'Employer national insurance',fundE:'Fund provision',sevE:'Severance',corp:'Agency fee',empTot:'Monthly cost',internal:'For the employer only, not part of the payslip'}
+};
+
+function workdays(from,to,restWd){ let n=0; const d=new Date(from); while(d<=to){ if(d.getDay()!==restWd) n++; d.setDate(d.getDate()+1);} return n; }
+
+function calc(){
+  syncAuto();
+  const t=L[lang];
+  const err=$('sErr'); err.hidden=true;
+  const mv=$('month').value||'2026-10'; const [Y,M]=mv.split('-').map(Number);
+  const sv=$('start').value||mv+'-01'; const [sy,sm]=sv.split('-').map(Number);
+  const ev=$('end').value;
+  const monthIdx=(Y-sy)*12+(M-sm)+1;
+  if(monthIdx<1){err.textContent='חודש התלוש מוקדם מתאריך תחילת העבודה.';err.hidden=false;}
+  const mi=Math.max(1,monthIdx);
+  const workYear=Math.floor((mi-1)/12)+1;
+  const completedYears=Math.floor(mi/12);
+  const restWd=+$('restWd').value;
+
+  // period & job percentage by workdays (excluding the weekly rest day)
+  const mStart=new Date(Y,M-1,1), mEnd=new Date(Y,M,0);
+  const sDate=new Date(sv+'T00:00'), eDate=ev?new Date(ev+'T00:00'):null;
+  const pFrom=sDate>mStart?sDate:mStart;
+  const pTo=(eDate&&eDate<mEnd)?eDate:mEnd;
+  const totalWd=workdays(mStart,mEnd,restWd);
+  const workedWd=pTo>=pFrom?workdays(pFrom,pTo,restWd):0;
+  const factor=totalWd?Math.min(1,workedWd/totalWd):1;
+  if(eDate&&eDate<mStart){err.textContent='תאריך הסיום מוקדם מחודש התלוש.';err.hidden=false;}
+
+  const base=num('rBase'), hours=num('rHours')||182, dayVal=base/(num('rDays')||26);
+  const hol=num('rHol'), recDay=num('rRec');
+
+  // payments
+  const pay=[];
+  const basePay=r2(base*factor);
+  pay.push({l:t.base,q:hours,r:f2(base/hours),b:f2(base),p:Math.round(factor*100)+'%',v:basePay});
+  const rest=num('restDays'); if(rest) pay.push({l:t.restWork,q:rest,r:f2(hol),v:r2(rest*hol)});
+  const hd=num('holDays'); if(hd) pay.push({l:t.holWork,q:hd,r:f2(hol),v:r2(hd*hol)});
+  const recMode=$('recMode').value;
+  const rdCompleted=recDays(completedYears);
+  const recYearDays=recDays(completedYears+1);           // accrues during current work year
+  const recAccDays=recYearDays/12*factor;
+  let recPaid=0, recPaidDays=0, recNote='';
+  if(recMode==='annual'){ if(rdCompleted){recPaidDays=rdCompleted; recPaid=r2(rdCompleted*recDay); pay.push({l:t.recPay,q:rdCompleted,r:f2(recDay),v:recPaid});} else recNote='דמי הבראה שנתיים משולמים רק אחרי שנת עבודה מלאה, ולכן לא נוספו.'; }
+  if(recMode==='monthly'){ recPaidDays=recAccDays; recPaid=r2(recAccDays*recDay); pay.push({l:t.recPay,q:f2(recAccDays),r:f2(recDay),v:recPaid}); }
+  const oa=num('otherAdd'); if(oa) pay.push({l:$('otherAddLbl').value.trim()||t.other,v:r2(oa)});
+  const gross=r2(pay.reduce((s,p)=>s+p.v,0));
+
+  // deductions
+  const sick=num('sickDays');
+  const sickLost=sick>0?1+0.5*Math.min(Math.max(sick-1,0),2):0;
+  const advSum=r2(advances.reduce((s,a)=>s+(parseFloat(a.a)||0),0));
+  $('advSum').textContent=f2(advSum);
+  const ded=[
+    {l:t.housing,v:r2(num('dHousing')*factor)},
+    {l:t.food,v:r2(num('dFood')*factor)},
+    {l:t.health,v:r2(num('dHealth')*factor)},
+    {l:t.extra,v:r2(num('dExtra')*factor)},
+    {l:t.sick,v:r2(sickLost*dayVal)}];
+  const ud=num('unpaidDays'); if(ud) ded.push({l:t.unpaid,v:r2(ud*dayVal)});
+  const visa=num('dVisa'); if(visa) ded.push({l:t.visa,v:r2(visa)});
+  ded.push({l:t.adv,v:advSum});
+  const dedTotal=r2(ded.reduce((s,d)=>s+d.v,0));
+  const net=r2(gross-dedTotal);
+
+  // rights
+  const penElig=$('veteran').checked||mi>=7;
+  const pen=penElig?r2(num('rMin')*num('rPen')/100*factor):0;
+  const penStart=new Date(sy,sm-1+6,1); const penStartLbl=`${String(penStart.getMonth()+1).padStart(2,'0')}/${penStart.getFullYear()}`;
+  const sevMonth=r2(basePay/12);
+  const vy=vacDays(workYear), vacAcc=vy/12*factor, vacUsed=num('vacTaken');
+  const vacNew=num('pVac')+vacAcc-vacUsed;
+  const recAccMoney=r2(recAccDays*recDay);
+  const recNew=r2(num('pRec')+recAccMoney-recPaid);
+  const sevNew=r2(num('pSev')+sevMonth);
+  const penNew=r2(num('pPen')+pen);
+  const newYear=(monthIdx===1)||((mi-1)%12===0);
+  const holStart=newYear?9:num('pHol'); const holUsed=num('holTaken');
+  const holNew=holStart-holUsed;
+  const sickAcc=1.5*factor; const sickNew=Math.min(90,num('pSick')+sickAcc)-sick;
+
+  // fund
+  const fund=[
+    {l:t.fRec,c:recMode==='monthly'?(lang==='he'?'משולם בתלוש':'Paid in payslip'):`${recYearDays} × ${f2(recDay)} ÷ 12`,v:recMode==='monthly'?0:recAccMoney},
+    {l:t.fVac,c:`${vy} × ${f2(dayVal)} ÷ 12`,v:r2(vacAcc*dayVal)},
+    {l:t.fPen,c:penElig?`${f2(num('rMin'))} × ${num('rPen')}%`:(lang==='he'?`מתחילה ב־${penStartLbl}`:`Starts ${penStartLbl}`),v:pen}];
+  const fundMonth=r2(fund.reduce((s,f)=>s+f.v,0));
+  const fundPrev=num('fundPrev'), fundUsed=num('fundUsed'), fundNew=r2(fundPrev+fundMonth-fundUsed);
+
+  // employer
+  const bl=r2(gross*num('rBL')/100);
+  const corp=num('rCorp');
+  const emp=[[t.gross,gross],[`${t.blE} ${num('rBL')}%`,bl],[t.fundE,fundMonth],[t.sevE,sevMonth],[t.corp,corp]];
+  const empTot=r2(emp.reduce((s,e)=>s+e[1],0));
+
+  lastResult={gross,net,dedTotal,advSum,recNew,sevNew,penNew,vacNew,sickNew,holNew,fundNew,fundMonth,empTot};
+  // ---------- render ----------
+  const today=new Date();
+  const slip=$('slip'); slip.dir=t.dir; slip.lang=lang;
+  const payRows=pay.map(p=>`<tr><td>${esc(p.l)}</td><td class="n">${p.q??''}</td><td class="n">${p.r??''}</td><td class="n">${p.b??''}</td><td class="n">${p.p??''}</td><td class="n">${f2(p.v)}</td></tr>`).join('');
+  const padRows=Math.max(0,ded.length-pay.length);
+  const filler=Array.from({length:padRows},()=>'<tr class="gap"><td></td><td></td><td></td><td></td><td></td><td></td></tr>').join('');
+  const dedRows=ded.map(d=>`<tr><td>${esc(d.l)}</td><td class="n">${f2(d.v)}</td></tr>`).join('');
+  const star=' *';
+  const NP=' - '+t.nopay;
+  const rights=[
+    [t.rec+(recMode!=='monthly'?NP:''),f2(recYearDays/12),f2(recDay),f2(recPaidDays),f2(recNew)+star],
+    [t.sev,f2(num('rSev'))+'%',f2(sevMonth),'0.00',f2(sevNew)+star],
+    [t.pen+NP,f2(num('rPen'))+'%',penElig?f2(pen):t.penFrom+penStartLbl,'0.00',f2(penNew)+star],
+    [t.vac+NP,f2(vacAcc),f2(dayVal)+star,f2(vacUsed),f2(vacNew)],
+    [t.sickBal,f2(sickAcc),'',f2(sick),f2(sickNew)],
+    [t.hol,f2(newYear?9:0),'',f2(holUsed),f2(holNew)]];
+
+  slip.innerHTML=`
+  <div class="row r-top">
+    <div class="box"><div class="kv">
+      <span>${t.empName}</span><span>${esc($('employer').value)}</span>
+      <span>${t.empId}</span><span>${esc($('employerId').value)}</span>
+      <span>${t.empAddr}</span><span>${esc($('employerAddr').value)}</span></div></div>
+    <div class="box"><div class="kv">
+      <span>${t.title}</span><span dir="ltr">${String(M).padStart(2,'0')}/${String(Y).slice(2)}</span>
+      <span dir="ltr">${t.dir==='rtl'?'← '+dShort(ymd(pFrom)):dShort(ymd(pFrom))+' →'}</span><span dir="ltr">${dShort(ymd(pTo))}</span>
+      <span>${t.printed}</span><span dir="ltr">${dShort(ymd(today))}</span></div></div>
+  </div>
+  <div class="row r-mid">
+    <div class="to"><b>${t.to}</b><div class="box">${esc($('worker').value)||'&nbsp;'}</div></div>
+    <div class="box"><h3>${t.personal}</h3><div class="kv">
+      <span>${t.passport}</span><span>${esc($('passport').value)}</span>
+      <span>${t.jobType}</span><span>${t.jobTypeV}</span>
+      <span>${t.baseType}</span><span>${t.baseTypeV}</span>
+      <span>${t.start}</span><span dir="ltr">${dShort(sv)}</span>
+      <span>${t.field}</span><span>${t.fieldV}</span></div></div>
+  </div>
+  <div class="row r-pay">
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>${t.desc}</th><th class="n">${t.qty}</th><th class="n">${t.rate}</th><th class="n">${t.bsal}</th><th class="n">${t.pct}</th><th class="n">${t.pay}</th></tr></thead>
+      <tbody>${payRows}${filler}
+        <tr class="sum"><td>${t.totPay}</td><td></td><td></td><td></td><td></td><td class="n">${f2(gross)}</td></tr>
+        <tr class="sum"><td>${t.totSal}</td><td></td><td></td><td></td><td></td><td class="n">${f2(gross)}</td></tr>
+        <tr><td>${t.totDed}</td><td></td><td></td><td></td><td></td><td class="n">${f2(dedTotal)}</td></tr>
+        <tr class="strong"><td>${t.payable}</td><td></td><td></td><td></td><td></td><td class="n">${f2(net)}</td></tr>
+      </tbody></table></div>
+    <div class="ded-col">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>${t.dedH}</th><th class="n">${t.dedV}</th></tr></thead>
+        <tbody>${dedRows}<tr class="sum strong"><td>${t.totDed}</td><td class="n">${f2(dedTotal)}</td></tr></tbody></table></div>
+      <div class="duebar"><span>${t.due}</span><span class="v">${f2(net)}₪</span></div>
+    </div>
+  </div>
+  <div class="row r-rights">
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>${t.subject}</th><th class="n">${t.cur}</th><th class="n">${t.curRate}</th><th class="n">${t.used}</th><th class="n">${t.acc}</th></tr></thead>
+      <tbody>${rights.map(r=>`<tr><td>${r[0]}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td></tr>`).join('')}</tbody></table>
+      <div class="small">${t.law}</div></div>
+    <div class="box" style="align-self:end"><h3>${t.gen}</h3><div class="kv">
+      <span>${t.method}</span><span>${t.methodV}</span>
+      <span>${t.bl}</span><span dir="ltr">${f2(bl)}</span></div></div>
+  </div>
+  <div class="foot">
+    <div class="sigline">${t.sign}</div>
+    <div class="duebar" style="min-width:220px"><span>${t.due}</span><span class="v">${f2(net)}₪</span></div>
+  </div>
+  <div class="extra">
+    <div class="small">${t.internal}</div>
+    <div class="row r-extra">
+      <div class="tbl-wrap"><h4>${t.fundH}</h4><table><tbody>
+        ${fund.map(f=>`<tr><td>${f.l}</td><td class="n small">${f.c}</td><td class="n">${f2(f.v)}</td></tr>`).join('')}
+        <tr class="sum strong"><td>${t.fTot}</td><td></td><td class="n">${f2(fundMonth)}</td></tr>
+        <tr><td>${t.fPrev}</td><td></td><td class="n">${f2(fundPrev)}</td></tr>
+        ${fundUsed?`<tr class="minus"><td>${t.fUsed}${$('fundUsedLbl').value.trim()?' ('+esc($('fundUsedLbl').value.trim())+')':''}</td><td></td><td class="n">-${f2(fundUsed)}</td></tr>`:''}
+        <tr class="fund-total"><td>${t.fNew}</td><td></td><td class="n">${f2(fundNew)}</td></tr>
+      </tbody></table></div>
+      <div class="tbl-wrap"><h4>${t.empH}</h4><table><tbody>
+        ${emp.map(e=>`<tr><td>${e[0]}</td><td class="n">${f2(e[1])}</td></tr>`).join('')}
+        <tr class="sum strong"><td>${t.empTot}</td><td class="n">${f2(empTot)}</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>`;
+
+  const notes=[];
+  if(recNote) notes.push(recNote);
+  if(sickNew<0) notes.push('ימי המחלה עולים על היתרה.');
+  if(holNew<0) notes.push('נוצלו יותר מ־9 ימי חג. הימים הנוספים יורדים מימי החופשה.');
+  if(net<0) notes.push('היתרה לתשלום שלילית. בדקי את הניכויים והמקדמות.');
+  if(fundNew<0) notes.push('נמשך מהקופה יותר ממה שיש בה.');
+  if(notes.length){err.textContent=notes.join(' ');err.hidden=false;}
+
+  lastText=[`${t.title} ${String(M).padStart(2,'0')}/${Y} (${dShort(ymd(pFrom))} - ${dShort(ymd(pTo))})`,
+    `${t.empName}: ${$('employer').value}`,`${t.to} ${$('worker').value} · ${t.passport} ${$('passport').value}`,'',
+    ...pay.map(p=>`${p.l}${p.q!==undefined?` (${p.q} × ${p.r})`:''}: ${f2(p.v)}`),`${t.totPay}: ${f2(gross)}`,'',
+    ...ded.filter(d=>d.v).map(d=>`${d.l}: ${f2(d.v)}`),`${t.totDed}: ${f2(dedTotal)}`,'',
+    `${t.due}: ${f2(net)} ₪`,'',
+    `${t.vac}: ${f2(vacNew)} · ${t.sickBal}: ${f2(sickNew)} · ${t.hol}: ${f2(holNew)}`,
+    `${t.rec}: ${f2(recNew)} · ${t.sev}: ${f2(sevNew)} · ${t.pen}: ${f2(penNew)}`].join('\n');
+}
+
+
+// ================= field helpers =================
+const getV=id=>{const e=$(id);return e.type==='checkbox'?e.checked:e.value;};
+const setV=(id,v)=>{const e=$(id); if(v===undefined||v===null)return; if(e.type==='checkbox')e.checked=!!v; else e.value=v;};
+const pick=list=>{const o={};list.forEach(id=>o[id]=getV(id));return o;};
+const monthlyState=()=>({...pick(MONTHLY),advances:advances.map(a=>({d:a.d||'',a:String(a.a??'')})),restOff:[...restOff].sort(),holOff:[...holOff].sort(),holAdd:holAdd.map(h=>({d:h.d,n:h.n}))});
+const canon=v=>Array.isArray(v)?'['+v.map(canon).join(',')+']':(v&&typeof v==='object')?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}':JSON.stringify(v===undefined?null:v);
+
+// ================= storage: private db, or this browser as fallback =================
+function queue(){ const q={}; return (key,fn)=>(q[key]=(q[key]||Promise.resolve()).catch(()=>{}).then(fn)); }
+
+function dbStore(db,path){
+  const base=db.collection(path); const run=queue();
+  return {
+    kind:'db',
+    watchWorkers(cb,err){ return base.where('type','==','worker').onSnapshot(s=>cb(s.docs.map(d=>({id:d.id,...d.data()})),s.metadata),err); },
+    saveWorker(id,data){ return run(id,()=>base.doc(id).set(data)); },
+    async deleteWorker(id){ const s=await base.doc(id).collection('slips').get(); for(const d of s.docs){ await base.doc(id).collection('slips').doc(d.id).delete(); } await run(id,()=>base.doc(id).delete()); },
+    watchSlips(wid,cb,err){ return base.doc(wid).collection('slips').onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=d.data());cb(o);},err); },
+    saveSlip(wid,m,data){ return run(wid+'/'+m,()=>base.doc(wid).collection('slips').doc(m).set(data)); },
+    deleteSlip(wid,m){ return run(wid+'/'+m,()=>base.doc(wid).collection('slips').doc(m).delete()); },
+    async getSettings(){ const s=await base.doc('settings').get(); return s.exists?s.data():null; },
+    saveSettings(data){ return run('settings',()=>base.doc('settings').set(data)); }
+  };
+}
+function localStore(){
+  const KEY='caregiver-store-v3';
+  const read=()=>{try{return JSON.parse(lsGet(KEY)||'')||null;}catch(e){return null;}};
+  let st=read()||{workers:{},slips:{},settings:null};
+  const wl=[], sl={};
+  const write=()=>lsSet(KEY,JSON.stringify(st));
+  const emitW=()=>{const arr=Object.entries(st.workers).map(([id,d])=>({id,...d}));wl.forEach(f=>f(arr,{fromCache:false}));};
+  const emitS=w=>(sl[w]||[]).forEach(f=>f({...(st.slips[w]||{})}));
+  return {
+    kind:'local',
+    watchWorkers(cb){ wl.push(cb); setTimeout(emitW,0); return ()=>{const i=wl.indexOf(cb); if(i>=0)wl.splice(i,1);}; },
+    async saveWorker(id,data){ st.workers[id]=data; write(); emitW(); },
+    async deleteWorker(id){ delete st.workers[id]; delete st.slips[id]; write(); emitW(); },
+    watchSlips(w,cb){ (sl[w]=sl[w]||[]).push(cb); setTimeout(()=>emitS(w),0); return ()=>{const a=sl[w]; const i=a.indexOf(cb); if(i>=0)a.splice(i,1);}; },
+    async saveSlip(w,m,data){ (st.slips[w]=st.slips[w]||{})[m]=data; write(); emitS(w); },
+    async deleteSlip(w,m){ if(st.slips[w]) delete st.slips[w][m]; write(); emitS(w); },
+    async getSettings(){ return st.settings; },
+    async saveSettings(d){ st.settings=d; write(); },
+    dump(){ return JSON.stringify({app:'caregiver-payslip',version:3,data:st},null,1); },
+    restore(obj){ if(!obj||!obj.workers||!obj.slips) throw new Error('bad'); st={workers:obj.workers,slips:obj.slips,settings:obj.settings||null}; write(); }
+  };
+}
+let userCap=null, myId=null, noAccess=false, migratedCount=0;
+const SHARED='payroll';
+// One-time move of data saved before sharing (owner's private area) into the shared area.
+async function migratePrivate(db,uid){
+  const shared=db.collection(SHARED);
+  const sw=await shared.where('type','==','worker').get(); if(!sw.empty) return 0;
+  const priv=db.collection('data/users/'+uid);
+  const pw=await priv.where('type','==','worker').get(); if(pw.empty) return 0;
+  for(const d of pw.docs){
+    await shared.doc(d.id).set(d.data());
+    const ss=await priv.doc(d.id).collection('slips').get();
+    for(const x of ss.docs) await shared.doc(d.id).collection('slips').doc(x.id).set(x.data());
+  }
+  const st=await priv.doc('settings').get(); if(st.exists) await shared.doc('settings').set(st.data());
+  return pw.size;
+}
+function fbStore(fs){
+  const base=fs.collection(SHARED); const run=queue();
+  const snapDocs=s=>s.docs.map(d=>({id:d.id,...d.data()}));
+  const st={
+    kind:'db', fb:true,
+    watchWorkers(cb,err){ return base.where('type','==','worker').onSnapshot(s=>cb(snapDocs(s),{fromCache:s.metadata.fromCache}),err); },
+    saveWorker(id,data){ return run(id,()=>base.doc(id).set(data)); },
+    async deleteWorker(id){ const s=await base.doc(id).collection('slips').get(); for(const d of s.docs) await d.ref.delete(); await run(id,()=>base.doc(id).delete()); },
+    watchSlips(wid,cb,err){ return base.doc(wid).collection('slips').onSnapshot(s=>{const o={};s.docs.forEach(d=>o[d.id]=d.data());cb(o);},err); },
+    saveSlip(wid,m,data){ return run(wid+'/'+m,()=>base.doc(wid).collection('slips').doc(m).set(data)); },
+    deleteSlip(wid,m){ return run(wid+'/'+m,()=>base.doc(wid).collection('slips').doc(m).delete()); },
+    async getSettings(){ const s=await base.doc('settings').get(); return s.exists?s.data():null; },
+    saveSettings(data){ return run('settings',()=>base.doc('settings').set(data)); },
+    async dump(){
+      const out={workers:{},slips:{},settings:null};
+      const ws=await base.where('type','==','worker').get();
+      for(const d of ws.docs){ out.workers[d.id]=d.data(); const ss=await base.doc(d.id).collection('slips').get(); out.slips[d.id]={}; ss.docs.forEach(x=>out.slips[d.id][x.id]=x.data()); }
+      out.settings=await st.getSettings();
+      return JSON.stringify({app:'caregiver-payslip',version:3,data:out},null,1);
+    },
+    async restore(obj){
+      if(!obj||!obj.workers||!obj.slips) throw new Error('bad');
+      for(const [id,w] of Object.entries(obj.workers)){ await base.doc(id).set(w); for(const [m,sl] of Object.entries(obj.slips[id]||{})) await base.doc(id).collection('slips').doc(m).set(sl); }
+      if(obj.settings) await base.doc('settings').set(obj.settings);
+    }
+  };
+  return st;
+}
+let fbAuth=null, fbFs=null, fbEmail='';
+function showGate(title,text,btn,onClick){
+  $('gate').hidden=false; $('gateTitle').textContent=title; $('gateText').textContent=text;
+  const b=$('gateBtn'); b.hidden=!btn; b.textContent=btn||''; b.onclick=onClick||null;
+}
+async function connectFirebase(){
+  showGate('מתחבר…','טוען את האפליקציה.',null);
+  const V='10.12.2';
+  for(const m of ['app','auth','firestore']) await loadScript(`https://www.gstatic.com/firebasejs/${V}/firebase-${m}-compat.js`);
+  firebase.initializeApp(FIREBASE_CONFIG);
+  fbAuth=firebase.auth(); fbFs=firebase.firestore();
+  const user=await new Promise(res=>{
+    const un=fbAuth.onAuthStateChanged(u=>{
+      if(u){ un(); res(u); return; }
+      showGate('כניסה לאפליקציה','כדי לראות את המטפלות והתלושים צריך להתחבר עם חשבון Google שקיבל הרשאה.','כניסה עם Google',async()=>{
+        try{ await fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+        catch(e){ try{ await fbAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); }catch(_){ $('gateText').textContent='הכניסה נכשלה. נסי שוב.'; } }
+      });
+    });
+  });
+  fbEmail=(user.email||'').toLowerCase(); myId=fbEmail;
+  try{ await fbFs.collection(SHARED).doc('settings').get(); }
+  catch(e){
+    showGate('אין הרשאה',`החשבון ${fbEmail} עוד לא קיבל גישה. בקשי מבעלת האפליקציה להוסיף את הכתובת הזו.`,'התחברות עם חשבון אחר',async()=>{ await fbAuth.signOut(); location.reload(); });
+    return new Promise(()=>{});
+  }
+  $('gate').hidden=true;
+  $('acctBar').hidden=false; $('acctEmail').textContent='מחוברת כ־'+fbEmail;
+  if(OWNER_EMAIL&&fbEmail===OWNER_EMAIL.toLowerCase()) setupMembers();
+  return fbStore(fbFs);
+}
+function setupMembers(){
+  $('membersToggle').hidden=false;
+  const col=fbFs.collection('members');
+  col.onSnapshot(s=>{
+    const list=s.docs.map(d=>d.id).sort();
+    $('membersList').innerHTML=`<div class="hrow" style="grid-template-columns:minmax(0,1fr) auto"><span dir="ltr" style="text-align:start">${esc(OWNER_EMAIL)}</span><span class="note">בעלת האפליקציה</span></div>`+
+      list.map(e=>`<div class="hrow" style="grid-template-columns:minmax(0,1fr) auto"><span dir="ltr" style="text-align:start">${esc(e)}</span><button type="button" class="danger" data-rmmember="${esc(e)}">הסרה</button></div>`).join('');
+  },()=>{});
+  $('membersToggle').onclick=()=>{ $('membersBox').hidden=!$('membersBox').hidden; };
+  $('memberAdd').onclick=async()=>{
+    const e=$('memberEmail').value.trim().toLowerCase();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ flash('כתובת המייל לא תקינה.'); $('memberEmail').focus(); return; }
+    try{ await col.doc(e).set({added:new Date().toISOString()}); $('memberEmail').value=''; flash(e+' נוסף/ה.'); }catch(err){ flash('ההוספה נכשלה.'); }
+  };
+  $('membersList').addEventListener('click',async ev=>{
+    const b=ev.target.closest('[data-rmmember]'); if(!b) return;
+    if(b.dataset.armed!=='1'){ b.dataset.armed='1'; b.textContent='לאשר?'; setTimeout(()=>{b.dataset.armed='';b.textContent='הסרה';},4000); return; }
+    try{ await col.doc(b.dataset.rmmember).delete(); }catch(err){ flash('ההסרה נכשלה.'); }
+  });
+}
+$('signOutBtn').addEventListener('click',async()=>{ if(fbAuth){ await fbAuth.signOut(); location.reload(); } });
+$('membersBox').addEventListener('input',e=>e.stopPropagation());
+
+async function connectStore(){
+  if(!window.claude && FIREBASE_CONFIG){
+    try{ return await connectFirebase(); }
+    catch(e){ showGate('לא ניתן להתחבר','בדקי את החיבור לאינטרנט ונסי שוב.','ניסיון נוסף',()=>location.reload()); return new Promise(()=>{}); }
+  }
+  try{
+    if(window.claude&&window.claude.use){
+      const db=await window.claude.use('db'); userCap=db?await window.claude.use('user'):null;
+      myId=userCap?await userCap.id():null;
+      if(db&&userCap){
+        if(await userCap.canEdit()){
+          if(myId&&await userCap.isOwner()){ try{ migratedCount=await migratePrivate(db,myId); }catch(e){} }
+          return dbStore(db,SHARED);
+        }
+        noAccess=true;
+      }
+    }
+  }catch(e){}
+  return localStore();
+}
+
+// ================= workers =================
+function renderTabs(){
+  const bar=$('wbar');
+  if(!store){ bar.innerHTML=''; return; }
+  const sorted=[...workers].sort((a,b)=>(a.created||'').localeCompare(b.created||''));
+  bar.innerHTML=sorted.map(w=>`<button type="button" class="wtab" data-w="${esc(w.id)}" aria-pressed="${w.id===curW}">${esc(w.worker||'מטפלת ללא שם')}</button>`).join('')
+    +(workers.length&&workers.length<MAX_WORKERS?`<button type="button" class="wtab add" id="addWorker">+ מטפלת נוספת</button>`:'')
+    +(workers.length>=MAX_WORKERS?`<span class="note">מקסימום ${MAX_WORKERS} מטפלות</span>`:'')
+    +(curW?`<button type="button" class="ghost" id="manageWorker" style="margin-inline-start:auto">עריכת פרטים או מחיקת מטפלת</button>`:'');
+  $('sampleBanner').hidden=workers.length>0;
+  $('delWrap').hidden=!curW;
+  $('saveSlip').disabled=!curW;
+}
+$('wbar').addEventListener('click',e=>{
+  const b=e.target.closest('[data-w]'); if(b){ if(b.dataset.w!==curW) selectWorker(b.dataset.w); return; }
+  if(e.target.closest('#addWorker')) addWorker(false);
+  if(e.target.closest('#manageWorker')){ $('profileBox').open=true; $('profileBox').scrollIntoView({behavior:'smooth',block:'start'}); }
+});
+
+function newId(){ return 'w'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+async function addWorker(fromForm){
+  if(!store||workers.length>=MAX_WORKERS) return;
+  const id=newId();
+  let data;
+  if(fromForm){ data={...pick(PROFILE)}; }
+  else{
+    const cur=pick(PROFILE);
+    data={...cur,worker:'',passport:'',start:ymd(new Date(new Date().getFullYear(),new Date().getMonth(),1)),end:'',veteran:false,oRec:'0',oSev:'0',oPen:'0',oVac:'0',oSick:'0',oHol:'0',oFund:'0'};
+  }
+  data.holCustom=fromForm?holCustom.map(h=>({...h})):[];
+  data.type='worker'; data.created=new Date().toISOString();
+  workers.push({id,...data});
+  try{ await W(st=>st.saveWorker(id,data)); }catch(e){ flash('השמירה נכשלה. נסי שוב בעוד רגע.'); }
+  if(fromForm){ if(curW!==id) selectWorker(id); }
+  else { selectWorker(id); $('profileBox').open=true; $('worker').focus(); }
+}
+$('saveAsWorker').addEventListener('click',()=>{
+  if(!$('worker').value.trim()){ $('profileBox').open=true; $('worker').focus(); flash('הזיני את שם העובדת קודם.'); return; }
+  addWorker(true);
+});
+
+function selectWorker(id){
+  const w=workers.find(x=>x.id===id); if(!w) return;
+  curW=id; lsSet('caregiver-cur',id);
+  PROFILE.forEach(k=>setV(k,w[k]));
+  if(!w.recPlan) setV('recPlan','monthly');
+  if(!w.holCal) setV('holCal','jewish');
+  holCustom=Array.isArray(w.holCustom)?w.holCustom.map(h=>({...h})):[]; renderCustomHol();
+  renderTabs(); subscribeSlips(id);
+}
+function subscribeSlips(id){
+  if(unsubSlips) unsubSlips();
+  slips={}; slipsReady=false; $('histBox').hidden=true;
+  unsubSlips=store.watchSlips(id,s=>{
+    slips=s;
+    if(!slipsReady){ slipsReady=true; $('month').value=defaultMonth(); loadMonth(); }
+    renderHistory(); updateState();
+  },()=>flash('לא ניתן לטעון את התלושים כרגע.'));
+}
+function defaultMonth(){
+  const ms=Object.keys(slips).sort();
+  if(ms.length){ const [y,m]=ms[ms.length-1].split('-').map(Number); return ymd(new Date(y,m,1)).slice(0,7); }
+  const d=new Date(); return ymd(new Date(d.getFullYear(),d.getMonth()-1,1)).slice(0,7);
+}
+
+// profile autosave
+let profTimer=null;
+function scheduleProfileSave(){
+  if(!curW) return; clearTimeout(profTimer);
+  profTimer=setTimeout(async()=>{
+    const w=workers.find(x=>x.id===curW); if(!w) return;
+    const data={type:'worker',created:w.created,...pick(PROFILE),holCustom:holCustom.map(h=>({...h}))};
+    Object.assign(w,data); renderTabs();
+    try{ await W(st=>st.saveWorker(curW,data)); }catch(e){ flash('שמירת פרטי המטפלת נכשלה.'); }
+  },700);
+}
+let delArmed=false;
+$('delWorker').addEventListener('click',async()=>{
+  if(!curW) return;
+  if(!delArmed){ delArmed=true; $('delWorker').textContent='למחוק לצמיתות? לחצי שוב לאישור'; setTimeout(()=>{delArmed=false;$('delWorker').textContent='מחיקת המטפלת וכל התלושים שלה';},4000); return; }
+  delArmed=false; $('delWorker').textContent='מחיקת המטפלת וכל התלושים שלה';
+  const id=curW; if(unsubSlips){unsubSlips();unsubSlips=null;}
+  curW=null; workers=workers.filter(w=>w.id!==id);
+  try{ await W(st=>st.deleteWorker(id)); flash('המטפלת נמחקה.'); }catch(e){ flash('המחיקה נכשלה.'); }
+  if(workers.length) selectWorker(workers[0].id); else { renderTabs(); renderHistory(); updateState(); }
+});
+
+// ================= months & history =================
+function loadMonth(){
+  if(!curW){ calc(); return; }
+  const m=$('month').value; const s=slips[m];
+  if(s){
+    MONTHLY.forEach(k=>setV(k,s.inputs[k]));
+    advances=(s.inputs.advances||[]).map(a=>({...a}));
+    if(s.inputs.autoDays===undefined) $('autoDays').checked=false;
+    restOff=[...(s.inputs.restOff||[])]; holOff=[...(s.inputs.holOff||[])]; holAdd=(s.inputs.holAdd||[]).map(h=>({...h}));
+    $('prevSrc').textContent=`תלוש ${mLabel(m)} נשמר ב־${new Date(s.savedAt).toLocaleDateString('he-IL')}. היתרות כפי שנשמרו.`;
+  } else {
+    Object.entries(MONTH_BLANK).forEach(([k,v])=>setV(k,v));
+    advances=[]; restOff=[]; holOff=[]; holAdd=[];
+    setV('recMode',getV('recPlan')==='monthly'?'monthly':'none');
+    const earlier=Object.keys(slips).filter(x=>x<m).sort().pop();
+    if(earlier){
+      Object.entries(RES_MAP).forEach(([k,r])=>setV(k,f2(slips[earlier].result[r]||0)));
+      const [y,mm]=m.split('-').map(Number); const expect=ymd(new Date(y,mm-2,1)).slice(0,7);
+      $('prevSrc').textContent=earlier===expect?`מולא אוטומטית מתלוש ${mLabel(earlier)}.`:`מולא מתלוש ${mLabel(earlier)}. שימי לב: אין תלוש שמור לחודשים שביניהם.`;
+    } else {
+      Object.entries(OPEN_MAP).forEach(([k,o])=>setV(k,getV(o)||'0'));
+      $('prevSrc').textContent='אין תלוש קודם שמור. מולא מיתרות הפתיחה של המטפלת.';
+    }
+  }
+  renderAdv(); calc(); renderHistory(); updateState();
+}
+$('month').addEventListener('change',loadMonth);
+
+function renderHistory(){
+  const box=$('histBox'), list=$('hist');
+  const ms=Object.keys(slips).sort().reverse();
+  box.hidden=!curW||!ms.length;
+  const cur=$('month').value;
+  list.innerHTML=ms.map(m=>{const s=slips[m];return `<div class="hrow${m===cur?' cur':''}">
+    <span>${mLabel(m)} <span class="note who" data-uid="${esc(s.savedBy||'')}"></span></span><span class="amt">${f2(s.result?.net||0)} ₪</span>
+    <button type="button" class="ghost" data-open="${m}" ${m===cur?'disabled':''}>פתיחה</button>
+    <button type="button" class="danger" data-del="${m}">מחיקה</button></div>`;}).join('');
+  fillSavers();
+}
+async function fillSavers(){
+  document.querySelectorAll('#hist .who[data-uid]').forEach(e=>{ const u=e.dataset.uid; if(u&&u.includes('@')) e.textContent=u===myId?'· נשמר על ידך':'· נשמר על ידי '+u; });
+  if(!userCap||!userCap.profiles) return;
+  const els=[...document.querySelectorAll('#hist .who[data-uid]')].filter(e=>e.dataset.uid);
+  const ids=[...new Set(els.map(e=>e.dataset.uid))]; if(!ids.length) return;
+  try{ const ps=await userCap.profiles(ids); els.forEach(e=>{const pr=ps[e.dataset.uid]; e.textContent=pr?(pr.isMe?'· נשמר על ידך':(pr.name?'· נשמר על ידי '+pr.name:'')):'';}); }catch(e){}
+}
+let delSlipArmed=null;
+$('hist').addEventListener('click',async e=>{
+  const o=e.target.closest('[data-open]'); if(o){ $('month').value=o.dataset.open; loadMonth(); return; }
+  const d=e.target.closest('[data-del]'); if(!d) return;
+  const m=d.dataset.del;
+  if(delSlipArmed!==m){ delSlipArmed=m; d.textContent='לאשר?'; setTimeout(()=>{if(delSlipArmed===m){delSlipArmed=null;renderHistory();}},4000); return; }
+  delSlipArmed=null;
+  try{ await W(st=>st.deleteSlip(curW,m)); flash(`תלוש ${mLabel(m)} נמחק.`); if(m===$('month').value) loadMonth(); }catch(err){ flash('המחיקה נכשלה.'); }
+});
+
+function updateState(){
+  const el=$('saveState'), btn=$('saveSlip');
+  if(!curW){ el.hidden=true; btn.textContent='שמירת התלוש'; return; }
+  const m=$('month').value, s=slips[m]; el.hidden=false;
+  btn.textContent=s?`עדכון תלוש ${mLabel(m)}`:`שמירת תלוש ${mLabel(m)}`;
+  if(!s){ el.className='pill off'; el.textContent='לא נשמר'; return; }
+  const dirty=canon(monthlyState())!==canon(s.inputs);
+  el.className=dirty?'pill off':'pill'; el.textContent=dirty?'יש שינויים שלא נשמרו':'נשמר';
+}
+$('saveSlip').addEventListener('click',async()=>{
+  if(!curW) return; calc();
+  const m=$('month').value;
+  const data={month:m,inputs:monthlyState(),result:lastResult,profile:{...pick(PROFILE),holCustom},rates:pick(RATES),savedAt:new Date().toISOString(),savedBy:myId||null};
+  $('saveSlip').disabled=true;
+  try{
+    await W(st=>st.saveSlip(curW,m,data)); slips[m]=data;
+    const later=Object.keys(slips).some(x=>x>m);
+    flash(later?`תלוש ${mLabel(m)} נשמר. יש תלושים מאוחרים יותר: היתרות בהם לא עודכנו.`:`תלוש ${mLabel(m)} נשמר.`);
+  }catch(e){ flash(e&&e.code==='quota_exceeded'?'אין מקום לשמירה. מחקי תלושים ישנים.':'השמירה נכשלה. נסי שוב בעוד רגע.'); }
+  $('saveSlip').disabled=false; renderHistory(); updateState();
+});
+
+let flashT=null;
+function flash(msg){ $('copyMsg').textContent=msg; clearTimeout(flashT); flashT=setTimeout(()=>{$('copyMsg').textContent='';},6000); }
+
+// ================= rates =================
+let rateTimer=null;
+function scheduleRatesSave(){ if(!store) return; clearTimeout(rateTimer); rateTimer=setTimeout(()=>W(st=>st.saveSettings({rates:pick(RATES)})).catch(()=>flash('שמירת התעריפים נכשלה.')),800); }
+
+// ================= rest days & holidays =================
+const JEWISH={
+ 2025:[['2025-04-13','פסח'],['2025-04-19','שביעי של פסח'],['2025-05-01','יום העצמאות'],['2025-06-02','שבועות'],['2025-09-23','ראש השנה'],['2025-09-24','ראש השנה ב׳'],['2025-10-02','יום כיפור'],['2025-10-07','סוכות'],['2025-10-14','שמחת תורה']],
+ 2026:[['2026-04-02','פסח'],['2026-04-08','שביעי של פסח'],['2026-04-22','יום העצמאות'],['2026-05-22','שבועות'],['2026-09-12','ראש השנה'],['2026-09-13','ראש השנה ב׳'],['2026-09-21','יום כיפור'],['2026-09-26','סוכות'],['2026-10-03','שמחת תורה']],
+ 2027:[['2027-04-22','פסח'],['2027-04-28','שביעי של פסח'],['2027-05-12','יום העצמאות'],['2027-06-11','שבועות'],['2027-10-02','ראש השנה'],['2027-10-03','ראש השנה ב׳'],['2027-10-11','יום כיפור'],['2027-10-16','סוכות'],['2027-10-23','שמחת תורה']],
+ 2028:[['2028-04-11','פסח'],['2028-04-17','שביעי של פסח'],['2028-05-02','יום העצמאות'],['2028-05-31','שבועות'],['2028-09-21','ראש השנה'],['2028-09-22','ראש השנה ב׳'],['2028-09-30','יום כיפור'],['2028-10-05','סוכות'],['2028-10-12','שמחת תורה']]
+};
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da);}
+function holidaysFor(y,cal){
+  if(cal==='jewish') return (JEWISH[y]||[]).map(([d,n])=>({d,n}));
+  if(cal==='christian'){ const E=easter(y), add=(n,o)=>{const x=new Date(E);x.setDate(x.getDate()+o);return {d:ymd(x),n};};
+    return [{d:`${y}-01-01`,n:'ראש השנה האזרחית'},add('יום שישי הטוב',-2),add('פסחא',0),add('שני של פסחא',1),add('חג העלייה',39),add('פנטקוסט',49),add('שני של פנטקוסט',50),{d:`${y}-12-25`,n:'חג המולד'},{d:`${y}-12-26`,n:'יום אחרי חג המולד'}]; }
+  if(cal==='custom') return holCustom.map(h=>({d:h.y?`${y}${h.d.slice(4)}`:h.d,n:h.n})).filter(h=>h.d.startsWith(y+'-'));
+  return [];
+}
+function renderCustomHol(){
+  const show=$('holCal').value==='custom'; $('customHolBox').hidden=!show; if(!show) return;
+  const list=[...holCustom].sort((a,b)=>a.d.slice(5).localeCompare(b.d.slice(5)));
+  $('customHolList').innerHTML=list.length?list.map(h=>`<div class="hrow" style="grid-template-columns:minmax(0,1fr) auto auto"><span>${esc(h.n)}</span><span class="amt">${h.y?dShort(h.d).slice(0,-3)+' · כל שנה':dShort(h.d)}</span><button type="button" class="danger" data-rmch="${esc(h.d)}">הסרה</button></div>`).join(''):'<p class="note">עוד לא הוזנו ימי חג.</p>';
+  const yearly=holCustom.filter(h=>h.y).length;
+  $('chCount').textContent=holCustom.length?`${holCustom.length} ימים ברשימה. לפי התנאים, העובדת זכאית ל־9 ימי חג בשנה.`:'';
+}
+$('customHolBox').addEventListener('click',e=>{
+  const r=e.target.closest('[data-rmch]');
+  if(r){ holCustom=holCustom.filter(h=>h.d!==r.dataset.rmch); renderCustomHol(); calc(); scheduleProfileSave(); return; }
+  if(e.target.closest('#chAdd')){
+    const d=$('chD').value, n=$('chN').value.trim()||'חג', y=$('chY').checked;
+    if(!d){ $('chD').focus(); return; }
+    holCustom=holCustom.filter(h=>h.d!==d).concat([{d,n,y}]);
+    $('chD').value=''; $('chN').value=''; renderCustomHol(); calc(); scheduleProfileSave(); $('chD').focus();
+  }
+});
+$('customHolBox').addEventListener('input',e=>e.stopPropagation());
+$('customHolBox').addEventListener('change',e=>e.stopPropagation());
+const DAYN=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','שבת'];
+function syncAuto(){
+  const auto=$('autoDays').checked;
+  ['restDays','holDays','holTaken'].forEach(id=>$(id).readOnly=auto);
+  const box=$('dayList'); box.hidden=!auto; if(!auto) return;
+  const mv=$('month').value||'2026-10'; const [Y,M]=mv.split('-').map(Number);
+  const sv=$('start').value||mv+'-01', ev=$('end').value;
+  const mStart=new Date(Y,M-1,1), mEnd=new Date(Y,M,0), sD=new Date(sv+'T00:00'), eD=ev?new Date(ev+'T00:00'):null;
+  const from=sD>mStart?sD:mStart, to=(eD&&eD<mEnd)?eD:mEnd;
+  const inP=d=>{const x=new Date(d+'T00:00');return x>=from&&x<=to;};
+  const seen=new Set();
+  const hol=holidaysFor(Y,$('holCal').value).map(h=>({...h,added:false})).concat(holAdd.map(h=>({...h,added:true})))
+    .filter(h=>h.d&&inP(h.d)&&!seen.has(h.d)&&seen.add(h.d)).sort((a,b)=>a.d.localeCompare(b.d));
+  const restWd=+$('restWd').value, rest=[];
+  for(const d=new Date(from); d<=to; d.setDate(d.getDate()+1)){ const k=ymd(d); if(d.getDay()===restWd&&!seen.has(k)) rest.push(k); }
+  const rw=rest.filter(d=>!restOff.includes(d)).length, hw=hol.filter(h=>!holOff.includes(h.d)).length;
+  $('restDays').value=rw; $('holDays').value=hw; $('holTaken').value=hol.length-hw;
+  const chip=(kind,d,label,worked)=>`<button type="button" class="day" data-kind="${kind}" data-d="${d}" aria-pressed="${worked}" title="${worked?'עבדה. לחיצה: לא עבדה':'לא עבדה. לחיצה: עבדה'}">${label}</button>`;
+  box.innerHTML=`<span class="lbl">ימי מנוחה בתקופה: עבדה ב־${rw} מתוך ${rest.length}. לחצי על יום שלא עבדה בו.</span>
+    <div class="chips">${rest.map(d=>chip('rest',d,`${DAYN[new Date(d+'T00:00').getDay()]} ${dShort(d).slice(0,-3)}`,!restOff.includes(d))).join('')||'<span class="note">אין</span>'}</div>
+    <span class="lbl">ימי חג בתקופה: עבדה ב־${hw} מתוך ${hol.length}. חג שלא עבדה בו יורד מיתרת ימי החג.</span>
+    <div class="chips">${hol.map(h=>chip('hol',h.d,`${esc(h.n)} ${dShort(h.d).slice(0,-3)}`,!holOff.includes(h.d))+(h.added?`<button type="button" class="ghost" data-rmhol="${h.d}" aria-label="הסרת ${esc(h.n)}" style="padding:2px 8px;font-size:.8rem">הסרה</button>`:'')).join('')||'<span class="note">אין חגים בחודש הזה</span>'}</div>
+    <div class="addhol">
+      <label class="f">תאריך<input type="date" id="newHolD" min="${ymd(from)}" max="${ymd(to)}"></label>
+      <label class="f">שם החג<input id="newHolN" placeholder="למשל: עיד אל-פיטר"></label>
+      <button type="button" class="ghost" id="addHol">הוספת חג</button>
+    </div>`;
+}
+$('dayList').addEventListener('click',e=>{
+  const c=e.target.closest('.day');
+  if(c){ const d=c.dataset.d, arr=c.dataset.kind==='rest'?restOff:holOff; const i=arr.indexOf(d); if(i>=0)arr.splice(i,1); else arr.push(d); calc(); updateState(); const n=document.querySelector(`.day[data-d="${d}"]`); if(n) n.focus(); return; }
+  const r=e.target.closest('[data-rmhol]'); if(r){ holAdd=holAdd.filter(h=>h.d!==r.dataset.rmhol); holOff=holOff.filter(d=>d!==r.dataset.rmhol); calc(); updateState(); return; }
+  if(e.target.closest('#addHol')){ const d=$('newHolD').value, n=$('newHolN').value.trim()||'חג'; if(!d){ $('newHolD').focus(); return; } if(!holAdd.some(h=>h.d===d)) holAdd.push({d,n}); calc(); updateState(); }
+});
+$('dayList').addEventListener('input',e=>e.stopPropagation());
+
+// ================= advances =================
+function renderAdv(){
+  $('advList').innerHTML=advances.length?advances.map((a,i)=>`<div class="adv-row">
+      <label class="f">תאריך<input type="date" id="advD${i}" data-i="${i}" data-k="d" value="${esc(a.d||'')}"></label>
+      <label class="f">סכום ₪<input type="number" id="advA${i}" data-i="${i}" data-k="a" min="0" step="0.01" value="${esc(a.a)}"></label>
+      <button type="button" class="ghost" data-deladv="${i}" aria-label="מחיקת מקדמה">מחיקה</button>
+    </div>`).join(''):'<p class="note">לא נרשמו מקדמות החודש.</p>';
+}
+$('advList').addEventListener('input',e=>{const x=e.target; if(x.dataset.i!==undefined) advances[+x.dataset.i][x.dataset.k]=x.value;});
+$('advList').addEventListener('click',e=>{const b=e.target.closest('[data-deladv]'); if(!b)return; advances.splice(+b.dataset.deladv,1); renderAdv(); calc(); updateState();});
+$('addAdv').addEventListener('click',()=>{
+  const last=advances[advances.length-1]; let d=($('month').value||'2026-10')+'-01';
+  if(last&&last.d){const x=new Date(last.d+'T00:00'); x.setDate(x.getDate()+7); d=ymd(x);}
+  advances.push({d,a:String(num('rAdv')||100)}); renderAdv(); calc(); updateState();
+  const n=$('advA'+(advances.length-1)); if(n) n.focus();
+});
+
+// ================= PDF export =================
+function browserDownload(name,blob){
+  if(window.claude) return false;            // inside claude.ai the downloads capability is used
+  try{ const u=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); return true; }catch(e){ return false; }
+}
+function loadScript(src){ return new Promise((res,rej)=>{ const sc=document.createElement('script'); sc.src=src; sc.onload=res; sc.onerror=()=>rej(new Error('load')); document.head.appendChild(sc); }); }
+async function ensurePdfLibs(){
+  if(!window.html2canvas) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+}
+async function snapshotSlip(){
+  const host=document.createElement('div'); host.className='pdf-host';
+  const clone=$('slip').cloneNode(true); clone.removeAttribute('id'); clone.removeAttribute('aria-live');
+  const ex=clone.querySelector('.extra'); if(ex) ex.remove();
+  // the snapshot library splits text at "/" and scrambles dates; use dots in the file
+  const tw=document.createTreeWalker(clone,NodeFilter.SHOW_TEXT); const nodes=[]; while(tw.nextNode()) nodes.push(tw.currentNode);
+  nodes.forEach(n=>{ if(/\d\/\d/.test(n.nodeValue)) n.nodeValue=n.nodeValue.replace(/(\d)\/(?=\d)/g,'$1.'); });
+  host.appendChild(clone); document.body.appendChild(host);
+  try{ await document.fonts.ready; return await window.html2canvas(clone,{scale:2,backgroundColor:'#ffffff',logging:false,windowWidth:1200}); }
+  finally{ host.remove(); }
+}
+async function buildPdf(mode){
+  await ensurePdfLibs();
+  const keep=lang, langs=mode==='both'?['he','en']:[mode];
+  const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  try{
+    for(let i=0;i<langs.length;i++){
+      lang=langs[i]; calc();
+      const cv=await snapshotSlip();
+      let w=190, h=cv.height*w/cv.width; if(h>277){ h=277; w=cv.width*h/cv.height; }
+      if(i) pdf.addPage();
+      pdf.addImage(cv.toDataURL('image/jpeg',0.92),'JPEG',(210-w)/2,10,w,h);
+    }
+  } finally { lang=keep; calc(); }
+  return pdf.output('blob');
+}
+window.__buildPdf=buildPdf;
+$('pdfBtn').addEventListener('click',async()=>{
+  const btn=$('pdfBtn'); btn.disabled=true; const label=btn.textContent; btn.textContent='מכין קובץ…';
+  try{
+    const mode=$('pdfMode').value;
+    const blob=await buildPdf(mode);
+    const m=$('month').value||'';
+    const who=($('worker').value||'').trim().replace(/[\\/:*?"<>|]+/g,'').slice(0,40)||'payslip';
+    const fname=`${who} ${m}${mode==='both'?'':' '+mode}.pdf`;
+    const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;
+    if(!dl){ if(browserDownload(fname,blob)) flash('הקובץ ירד.'); else flash('ההורדה לא זמינה בתצוגה הזו. פתחי את העמוד ב־claude.ai.'); return; }
+    await dl.save({filename:fname,data:blob});
+    flash('הקובץ נשמר.');
+  }catch(e){
+    const c=e&&e.code;
+    if(c==='declined') flash('ההורדה בוטלה.');
+    else if(c==='rate_limited') flash('חלון שמירה כבר פתוח. נסי שוב בעוד רגע.');
+    else if(e&&e.message==='load') flash('לא ניתן לטעון את רכיב יצירת ה־PDF. בדקי את החיבור ונסי שוב.');
+    else flash('יצירת הקובץ נכשלה. נסי שוב.');
+  } finally { btn.disabled=false; btn.textContent=label; }
+});
+
+// ================= backup (standalone use) =================
+$('backupBtn').addEventListener('click',()=>{
+  if(!store||!store.dump) return;
+  const d=new Date(); const name=`payslips-backup-${ymd(d)}.json`;
+  Promise.resolve(store.dump()).then(txt=>{ if(browserDownload(name,new Blob([txt],{type:'application/json'}))) flash('קובץ הגיבוי ירד.'); }).catch(()=>flash('הגיבוי נכשל.'));
+});
+$('restoreFile').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0]; if(!f||!store||!store.restore) return;
+  try{ const obj=JSON.parse(await f.text()); await store.restore(obj.data||obj); flash('הנתונים שוחזרו. טוען מחדש…'); setTimeout(()=>location.reload(),600); }
+  catch(err){ flash('הקובץ לא נראה כמו גיבוי של האפליקציה הזו.'); }
+  e.target.value='';
+});
+
+// ================= language & copy =================
+function setLang(l){ lang=l; $('langHe').setAttribute('aria-pressed',l==='he'); $('langEn').setAttribute('aria-pressed',l==='en'); lsSet('caregiver-lang',l); calc(); }
+$('langHe').addEventListener('click',()=>setLang('he'));
+$('langEn').addEventListener('click',()=>setLang('en'));
+$('copyBtn').addEventListener('click',()=>{
+  const fb=()=>{const x=$('copyFallback');x.hidden=false;x.value=lastText;x.select();flash('סמני והעתיקי את הטקסט');};
+  try{navigator.clipboard.writeText(lastText).then(()=>flash('התלוש הועתק'),fb);}catch(e){fb();}
+});
+
+// ================= form events =================
+$('frm').addEventListener('input',e=>{
+  const id=e.target.id;
+  calc();
+  if(PROFILE.includes(id)) scheduleProfileSave();
+  if(RATES.includes(id)) scheduleRatesSave();
+  updateState();
+});
+$('frm').addEventListener('change',e=>{ if(e.target.id==='month') return;
+  if(e.target.id==='holCal') renderCustomHol();
+  if(e.target.id==='recPlan' && !(curW&&slips[$('month').value])) setV('recMode',getV('recPlan')==='monthly'?'monthly':'none'); calc(); if(PROFILE.includes(e.target.id)) scheduleProfileSave(); updateState(); });
+$('frm').addEventListener('submit',e=>e.preventDefault());
+
+// ================= boot =================
+if(lsGet('caregiver-lang')==='en') lang='en';
+$('langHe').setAttribute('aria-pressed',lang==='he'); $('langEn').setAttribute('aria-pressed',lang==='en');
+$('sampleBanner').hidden=true;
+renderAdv(); calc();
+
+let unsubWorkers=null, readOnlyAccount=false;
+function storeNoteText(){
+  if(store.fb) return 'הנתונים משותפים לכל מי שקיבל גישה, ומתעדכנים אצל כולם מיד.';
+  if(store.kind==='db') return (migratedCount?`הנתונים ששמרת קודם הועברו לאזור המשותף. `:'')+'הנתונים משותפים לכל מי שהוזמן לעמוד עם הרשאת עריכה.';
+  if(noAccess) return 'המטפלות המשותפות זמינות רק למי שהוזמן לעמוד עם הרשאת עריכה. בינתיים הנתונים נשמרים בדפדפן הזה בלבד.';
+  if(readOnlyAccount) return 'לחשבון שלך יש הרשאת צפייה בלבד בעמוד הזה, ולכן הנתונים נשמרים בדפדפן הזה בלבד.';
+  return 'הנתונים נשמרים בדפדפן הזה בלבד.';
+}
+async function attach(st){
+  store=st;
+  if(unsubWorkers){ unsubWorkers(); unsubWorkers=null; }
+  if(unsubSlips){ unsubSlips(); unsubSlips=null; }
+  $('backupBar').hidden=!(store.kind==='local'||(store.fb&&OWNER_EMAIL&&fbEmail===OWNER_EMAIL.toLowerCase()));
+  $('storeNote').textContent=storeNoteText();
+  try{ const s=await store.getSettings(); if(s&&s.rates) RATES.forEach(k=>setV(k,s.rates[k])); }catch(e){}
+  calc();
+  let first=true;
+  const timer=setTimeout(()=>{ if(first) $('storeNote').textContent='לא ניתן להגיע לנתונים השמורים כרגע.'; },10000);
+  unsubWorkers=store.watchWorkers((list,meta)=>{
+    workers=list.map(w=>{const old=workers.find(x=>x.id===w.id);return old&&old.id===curW?{...w,...pick(PROFILE)}:w;});
+    if(first && !(meta&&meta.fromCache)){ first=false; clearTimeout(timer); $('storeNote').textContent=storeNoteText(); }
+    if(!curW && workers.length){
+      const remembered=lsGet('caregiver-cur');
+      selectWorker(workers.some(w=>w.id===remembered)?remembered:workers.sort((a,b)=>(a.created||'').localeCompare(b.created||''))[0].id);
+    } else if(curW && !workers.some(w=>w.id===curW)){ curW=null; if(workers.length) selectWorker(workers[0].id); }
+    renderTabs();
+  },()=>{ $('storeNote').textContent='לא ניתן להגיע לנתונים השמורים כרגע.'; });
+  renderTabs();
+}
+// A viewer whose account may only view this page cannot write to the account store:
+// switch to this browser's storage and retry the same write there.
+async function W(op){
+  try{ return await op(store); }
+  catch(e){
+    if(store.kind==='db' && e && (e.code==='invalid_argument'||e.code==='not_granted')){
+      readOnlyAccount=true;
+      curW=null; workers=[];
+      await attach(localStore());
+      const r=await op(store);
+      return r;
+    }
+    throw e;
+  }
+}
+(async()=>{ await attach(await connectStore()); })();
+})();
+</script>
+
+</body>
+</html>
