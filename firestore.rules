@@ -5,7 +5,7 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email_verified == true;
     }
     function isOwner() {
-      return signedIn() && request.auth.token.email.lower() == 'OWNER_EMAIL';
+      return signedIn() && request.auth.token.email.lower() == 'yeelalrraz@gmail.com';
     }
     function isMember() {
       return isOwner() || (signedIn() &&
