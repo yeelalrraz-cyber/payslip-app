@@ -209,6 +209,7 @@ input[readonly]{opacity:.75}
             <label class="f">תשלום דמי הבראה
               <select id="recPlan"><option value="monthly">כל חודש בתלוש</option><option value="annual">פעם בשנה (חוסכים בקופה)</option></select>
             </label>
+            <label class="f">שכר בסיס חודשי (ברוטו)<input type="number" id="wBase" min="0" step="0.01" value="" placeholder="לפי התעריף הכללי"><span class="hint">ריק = לפי התעריף הכללי</span></label>
             <label class="chk"><input type="checkbox" id="veteran"> עובדת ותיקה בישראל (עבדה כבר אצל מעסיק קודם). פנסיה מהחודש הראשון במקום מהחודש השביעי.</label>
           </div>
           <legend style="margin-top:6px">ניכויים חודשיים קבועים</legend>
@@ -311,7 +312,7 @@ input[readonly]{opacity:.75}
       <details>
         <summary>תעריפים (משותפים לכל המטפלות)</summary>
         <div class="fields">
-          <label class="f">משכורת חודשית ברוטו<input type="number" id="rBase" step="0.01" value="6443.85"></label>
+          <label class="f">משכורת חודשית ברוטו (ברירת מחדל)<input type="number" id="rBase" step="0.01" value="6443.85"></label>
           <label class="f">שכר מינימום (לחישוב פנסיה)<input type="number" id="rMin" step="0.01" value="6443.85"></label>
           <label class="f">שעות בחודש<input type="number" id="rHours" step="1" value="182"></label>
           <label class="f">ימי עבודה בחודש<input type="number" id="rDays" step="1" value="26"><span class="hint">ערך יום = ברוטו ÷ ימים</span></label>
@@ -360,7 +361,7 @@ input[readonly]{opacity:.75}
 <script>
 (function(){
 const $=id=>document.getElementById(id);
-const PROFILE=['employer','employerId','employerAddr','worker','passport','start','end','restWd','holCal','recPlan','veteran','dHousing','dFood','dHealth','dExtra','oRec','oSev','oPen','oVac','oSick','oHol','oFund'];
+const PROFILE=['employer','employerId','employerAddr','worker','passport','start','end','restWd','holCal','recPlan','wBase','veteran','dHousing','dFood','dHealth','dExtra','oRec','oSev','oPen','oVac','oSick','oHol','oFund'];
 const MONTHLY=['autoDays','restDays','holDays','holTaken','vacTaken','sickDays','unpaidDays','recMode','dVisa','otherAdd','otherAddLbl','pRec','pSev','pPen','pVac','pSick','pHol','fundPrev','fundUsed','fundUsedLbl'];
 const RATES=['rBase','rMin','rHours','rDays','rHol','rRec','rAdv','rBL','rPen','rSev','rCorp'];
 const MONTH_BLANK={autoDays:true,restDays:'0',holDays:'0',holTaken:'0',vacTaken:'0',sickDays:'0',unpaidDays:'0',recMode:'none',dVisa:'0',otherAdd:'0',otherAddLbl:'',fundUsed:'0',fundUsedLbl:''};
@@ -441,7 +442,7 @@ function calc(){
   const factor=totalWd?Math.min(1,workedWd/totalWd):1;
   if(eDate&&eDate<mStart){err.textContent='תאריך הסיום מוקדם מחודש התלוש.';err.hidden=false;}
 
-  const base=num('rBase'), hours=num('rHours')||182, dayVal=base/(num('rDays')||26);
+  const base=num('wBase')||num('rBase'), hours=num('rHours')||182, dayVal=base/(num('rDays')||26);
   const hol=num('rHol'), recDay=num('rRec');
 
   // payments
