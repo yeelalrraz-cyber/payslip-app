@@ -214,7 +214,7 @@ input[readonly]{opacity:.75}
           <legend style="margin-top:6px">ניכויים חודשיים קבועים</legend>
           <div class="fields">
             <label class="f">הוצאות מגורים<input type="number" id="dHousing" min="0" step="0.01" value="0"></label>
-            <label class="f">הוצאות כלכלה<input type="number" id="dFood" min="0" step="0.01" value="243.85"></label>
+            <label class="f">ניכויים כלליים<input type="number" id="dFood" min="0" step="0.01" value="243.85"></label>
             <label class="f">ביטוח בריאות<input type="number" id="dHealth" min="0" step="0.01" value="0"></label>
             <label class="f">נלוות למגורים<input type="number" id="dExtra" min="0" step="0.01" value="0"></label>
           </div>
@@ -395,7 +395,7 @@ const L={
   desc:'תיאור התשלום',qty:'כמות',rate:'תעריף',bsal:'שכר בסיס',pct:'אחוז משרה',pay:'התשלום',
   base:'שכר בסיס',restWork:'עבודה בימי מנוחה',holWork:'עבודה בימי חג',recPay:'דמי הבראה',other:'תוספת',
   totPay:'סה"כ תשלומים',totSal:'סה"כ שכר:',totDed:'סה"כ ניכויים',payable:'שכר לתשלום',
-  dedH:'ניכויים',dedV:'הניכוי',housing:'הוצאות מגורים',food:'הוצאות כלכלה',health:'ביטוח בריאות',extra:'נלוות למגורים',sick:'ימי מחלה',unpaid:'היעדרות',visa:'אגרת ויזה',adv:'מקדמות / דמי כיס',
+  dedH:'ניכויים',dedV:'הניכוי',housing:'הוצאות מגורים',food:'ניכויים כלליים',health:'ביטוח בריאות',extra:'נלוות למגורים',sick:'ימי מחלה',unpaid:'היעדרות',visa:'אגרת ויזה',adv:'מקדמות / דמי כיס',
   due:'יתרה לתשלום',subject:'נושא',cur:'נתונים שוטפים',curRate:'תעריף שוטף',used:'ימים שנוצלו',acc:'נתונים מצטברים',
   rec:'הבראה',sev:'פיצויים',pen:'פיקדון גמל',vac:'יתרת ימי חופשה',hol:'יתרת ימי חג',sickBal:'יתרת ימי מחלה',
   gen:'נתונים כלליים',method:'אופן תשלום',methodV:'חודשי',bl:'ביטוח לאומי',law:'*זכאות על פי חוק',nopay:'לא לתשלום',penFrom:'מ־',sign:'חתימה',
@@ -407,7 +407,7 @@ const L={
   desc:'Description',qty:'Quantity',rate:'Rate',bsal:'B. Salary',pct:'Work',pay:'Payment',
   base:'Base salary',restWork:'Rest day work',holWork:'Holiday work',recPay:'Convalescence pay',other:'Addition',
   totPay:'Total payments',totSal:'Total salary',totDed:'All deductions',payable:'Salary payable',
-  dedH:'Deductions',dedV:'Deduction',housing:'Accommodation',food:'Food expenses',health:'Health insurance',extra:'Housing-related',sick:'Sick days',unpaid:'Unpaid absence',visa:'Visa fee',adv:'Advances',
+  dedH:'Deductions',dedV:'Deduction',housing:'Accommodation',food:'General deductions',health:'Health insurance',extra:'Housing-related',sick:'Sick days',unpaid:'Unpaid absence',visa:'Visa fee',adv:'Advances',
   due:'Balance due',subject:'Subject',cur:'Current totals',curRate:'Current rate',used:'Days used',acc:'Totals',
   rec:'Convalescence',sev:'Severance pay',pen:'Pension deposit',vac:'Vacation balance',hol:'Holiday balance',sickBal:'Sick days balance',
   gen:'General data',method:'Payment method',methodV:'Monthly',bl:'National insurance',law:'*Eligibility under the law',nopay:'Not payable',penFrom:'From ',sign:'Signature',
