@@ -303,7 +303,7 @@ input[readonly]{opacity:.75}
         <legend>משיכה מהקופה</legend>
         <div class="fields">
           <label class="f">נמשך מהקופה החודש<input type="number" id="fundUsed" min="0" step="0.01" value="0"></label>
-          <label class="f">לאיזו מטרה<input id="fundUsedLbl" value="" placeholder="פנסיה, הבראה, חופשה"></label>
+          <label class="f">לאיזו מטרה<input id="fundUsedLbl" value="" placeholder="פנסיה, פיצויים, הבראה, חופשה"></label>
         </div>
       </fieldset>
 
@@ -399,8 +399,8 @@ const L={
   due:'יתרה לתשלום',subject:'נושא',cur:'נתונים שוטפים',curRate:'תעריף שוטף',used:'ימים שנוצלו',acc:'נתונים מצטברים',
   rec:'הבראה',sev:'פיצויים',pen:'פיקדון גמל',vac:'יתרת ימי חופשה',hol:'יתרת ימי חג',sickBal:'יתרת ימי מחלה',
   gen:'נתונים כלליים',method:'אופן תשלום',methodV:'חודשי',bl:'ביטוח לאומי',law:'*זכאות על פי חוק',nopay:'לא לתשלום',penFrom:'מ־',sign:'חתימה',
-  fundH:'לשים בצד בקופה החודש',fRec:'דמי הבראה',fVac:'ימי חופשה',fPen:'פנסיה',fTot:'סה"כ לשים בצד',fPrev:'יתרה מהחודש הקודם',fUsed:'נמשך מהקופה',fNew:'יתרת הקופה',
-  empH:'עלות למעסיק',gross:'ברוטו',blE:'ביטוח לאומי מעסיק',fundE:'הפרשה לקופה',sevE:'פיצויים',corp:'דמי תאגיד',empTot:'עלות חודשית',internal:'לשימוש המעסיק, לא חלק מהתלוש'},
+  fundH:'לשים בצד בקופה החודש',fRec:'דמי הבראה',fVac:'ימי חופשה',fPen:'פנסיה',fSev:'פיצויים',fTot:'סה"כ לשים בצד',fPrev:'יתרה מהחודש הקודם',fUsed:'נמשך מהקופה',fNew:'יתרת הקופה',
+  empH:'עלות למעסיק',gross:'ברוטו',blE:'ביטוח לאומי מעסיק',fundE:'הפרשה לקופה (הבראה, חופשה, פנסיה, פיצויים)',sevE:'פיצויים',corp:'דמי תאגיד',empTot:'עלות חודשית',internal:'לשימוש המעסיק, לא חלק מהתלוש'},
  en:{dir:'ltr',title:'Payslip for',printed:'Printed on',empName:'Employer name',empId:'Employer ID number',empAddr:'Employer address',
   to:'To',personal:'Personal details',passport:'Passport number',jobType:'Job type:',jobTypeV:'Full-time',baseType:'Base salary:',baseTypeV:'Monthly',
   start:'Start of employment:',field:'Field of employment:',fieldV:'Caregiving',
@@ -411,7 +411,7 @@ const L={
   due:'Balance due',subject:'Subject',cur:'Current totals',curRate:'Current rate',used:'Days used',acc:'Totals',
   rec:'Convalescence',sev:'Severance pay',pen:'Pension deposit',vac:'Vacation balance',hol:'Holiday balance',sickBal:'Sick days balance',
   gen:'General data',method:'Payment method',methodV:'Monthly',bl:'National insurance',law:'*Eligibility under the law',nopay:'Not payable',penFrom:'From ',sign:'Signature',
-  fundH:'Set aside this month',fRec:'Convalescence',fVac:'Vacation days',fPen:'Pension',fTot:'Total to set aside',fPrev:'Previous balance',fUsed:'Withdrawn',fNew:'Fund balance',
+  fundH:'Set aside this month',fRec:'Convalescence',fVac:'Vacation days',fPen:'Pension',fSev:'Severance',fTot:'Total to set aside',fPrev:'Previous balance',fUsed:'Withdrawn',fNew:'Fund balance',
   empH:'Employer cost',gross:'Gross',blE:'Employer national insurance',fundE:'Fund provision',sevE:'Severance',corp:'Agency fee',empTot:'Monthly cost',internal:'For the employer only, not part of the payslip'}
 };
 
@@ -497,14 +497,15 @@ function calc(){
   const fund=[
     {l:t.fRec,c:recMode==='monthly'?(lang==='he'?'משולם בתלוש':'Paid in payslip'):`${recYearDays} × ${f2(recDay)} ÷ 12`,v:recMode==='monthly'?0:recAccMoney},
     {l:t.fVac,c:`${vy} × ${f2(dayVal)} ÷ 12`,v:r2(vacAcc*dayVal)},
-    {l:t.fPen,c:penElig?`${f2(num('rMin'))} × ${num('rPen')}%`:(lang==='he'?`מתחילה ב־${penStartLbl}`:`Starts ${penStartLbl}`),v:pen}];
+    {l:t.fPen,c:penElig?`${f2(num('rMin'))} × ${num('rPen')}%`:(lang==='he'?`מתחילה ב־${penStartLbl}`:`Starts ${penStartLbl}`),v:pen},
+    {l:t.fSev,c:`${f2(basePay)} ÷ 12`,v:sevMonth}];
   const fundMonth=r2(fund.reduce((s,f)=>s+f.v,0));
   const fundPrev=num('fundPrev'), fundUsed=num('fundUsed'), fundNew=r2(fundPrev+fundMonth-fundUsed);
 
   // employer
   const bl=r2(gross*num('rBL')/100);
   const corp=num('rCorp');
-  const emp=[[t.gross,gross],[`${t.blE} ${num('rBL')}%`,bl],[t.fundE,fundMonth],[t.sevE,sevMonth],[t.corp,corp]];
+  const emp=[[t.gross,gross],[`${t.blE} ${num('rBL')}%`,bl],[t.fundE,fundMonth],[t.corp,corp]];
   const empTot=r2(emp.reduce((s,e)=>s+e[1],0));
 
   lastResult={gross,net,dedTotal,advSum,recNew,sevNew,penNew,vacNew,sickNew,holNew,fundNew,fundMonth,empTot};
@@ -519,7 +520,7 @@ function calc(){
   const NP=' - '+t.nopay;
   const rights=[
     [t.rec+(recMode!=='monthly'?NP:''),f2(recYearDays/12),f2(recDay),f2(recPaidDays),f2(recNew)+star],
-    [t.sev,f2(num('rSev'))+'%',f2(sevMonth),'0.00',f2(sevNew)+star],
+    [t.sev+NP,f2(num('rSev'))+'%',f2(sevMonth),'0.00',f2(sevNew)+star],
     [t.pen+NP,f2(num('rPen'))+'%',penElig?f2(pen):t.penFrom+penStartLbl,'0.00',f2(penNew)+star],
     [t.vac+NP,f2(vacAcc),f2(dayVal)+star,f2(vacUsed),f2(vacNew)],
     [t.sickBal,f2(sickAcc),'',f2(sick),f2(sickNew)],
